@@ -108,7 +108,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             }
 
             
-            Debug.Log("Grid not found!");
+       
             return null; 
         }
 

@@ -54,7 +54,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             {
                 if (collider.tag.Equals("Obstacles"))
                 {
-                    Debug.Log(collider);
+                 
                     Walkable = false;
                 }
             }

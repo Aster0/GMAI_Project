@@ -14,13 +14,32 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         private List<GridPosition> positionsToCheck = new List<GridPosition>();
         private Grid startingGrid, currentGrid, destinationGrid;
         public LayerMask layerMask;
+        private bool isSearching;
 
-  
+        public GameObject destinationCube;
+
+        private Vector3 currentDestination;
+
+        private Coroutine movementCoroutine;
+        
+        private bool moving = false;
+
+        private Animator animator;
+        private CharacterController characterController;
+        
+        private Grid nextGridDestination;
+        private int nextGridCount;
+        private List<Grid> destinationNodes;
+
+        [SerializeField]
+        private int speed = 3;
         private void Start()
         {
 
+            characterController = GetComponent<CharacterController>();
+            animator = GetComponent<Animator>();
             GeneratePositions();
-            GetStartAndEndGrid();
+            GetStartAndEndGrid(destinationCube.transform.position);
          
            
         }
@@ -51,19 +70,30 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             return nearestCollider;
         }
 
-        public void GetStartAndEndGrid()
+        public void GetStartAndEndGrid(Vector3 pos)
         {
-          
-            
 
+
+
+            
 
             startingGrid = GetNearestGridToPosition(this.transform.position);
-            destinationGrid = GetNearestGridToPosition(new Vector3(8.79f, 0, -13.44f));
+            destinationGrid = GetNearestGridToPosition(pos);
 
+            currentDestination = pos;
 
             currentGrid = startingGrid;
+
+            openGrids = new List<Grid>(); // reset grids
+            closedGrids = new List<Grid>(); // reset grids
             
             closedGrids.Add(startingGrid);
+            
+            isSearching = false;
+            moving = false; // reset variables
+            
+            if(movementCoroutine != null)
+                StopCoroutine(movementCoroutine);
 
         }
 
@@ -79,7 +109,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             if (nearestCollider != null)
             {
                 Grid gridFound = nearestCollider.GetComponent<GridInfo>().grid;
-                Debug.Log("Grid Found: Grid#" + gridFound.index);
+                //Debug.Log("Grid Found: Grid#" + gridFound.index);
 
                 return gridFound;
           
@@ -212,8 +242,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 }
             }
 
+            isSearching = false;
 
- 
+
+
 
 
         }
@@ -221,13 +253,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public void StepLeastF() // step into the lowest F value grid
         {
 
-
+            isSearching = true;
 
             if (currentGrid.index != destinationGrid.index)
             {
                 // FINDING THE SMALLEST F OF THE NEAREST GRID WE JUST CHECKED AND CALCULATED.
 
-                if (openGrids.Count > 0) // more than 1 because starting node is 1, need to search for more open grids
+         
+                if (openGrids.Count > 0) // if least one open grid is added
                 {
                 
              
@@ -257,7 +290,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
              
 
                 if(!moving)
-                    StartCoroutine(MoveToDestination());
+                    MoveToDestination();
 
             }
             
@@ -268,8 +301,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             
         }
 
-        private bool moving = false;
-        private IEnumerator MoveToDestination()
+        private void MoveToDestination()
         {
             moving = true;
             Grid endNode = null; 
@@ -283,7 +315,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 }
             }
 
-            List<Grid> destinationNodes = new List<Grid>();
+            destinationNodes = new List<Grid>();
         
             Grid currentNodeHere = endNode;
         
@@ -299,26 +331,103 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             destinationNodes.OrderBy(n => n.index);
             destinationNodes.Reverse();
-        
-            foreach (Grid node in destinationNodes)
-            {
-                transform.position = node.transform.TransformPoint(new Vector3(0,0));
 
-                yield return new WaitForSeconds(0.2f);
-
-
-            }
-       
+            nextGridDestination = destinationNodes[0];
+            nextGridCount = 1;
+    
         }
 
         private void Update()
         {
-            StepLeastF();
+
+            if (currentDestination != destinationCube.transform.position)
+            {
+                GetStartAndEndGrid(destinationCube.transform.position);
+            }
+            
+            if(!isSearching) // if its not currently alreadey searching
+                StepLeastF();
+
+
+            Move();
         }
+
+
+        private void Move()
+        {
+            if (moving)
+            {
+
+                Vector3 toPos = 
+                    
+                    new Vector3(nextGridDestination.transform.TransformPoint(new Vector3(0, 0)).x, 
+                        0,
+                        nextGridDestination.transform.TransformPoint(new Vector3(0, 0)).z);
+                // y is 0 because the grid is slightly elevated so we need to make it back to 0
+                // to this position
+
+                if (Vector3.Distance(transform.position, 
+                        toPos) < 1)
+                {
+
+                    if (nextGridCount != destinationNodes.Count - 1)
+                    {
+                        nextGridCount++;
+                  
+
+                        nextGridDestination = destinationNodes[nextGridCount];
+                   
+                    }
+                    else
+                    {
+                        moving = false; // moved finish.
+                        animator.SetBool("Walk", false); // off the animation for walking
+                    }
+          
+                    
+             
+
+                }
+
+
+                transform.position = Vector3.MoveTowards(
+                    transform.position, toPos, Time.deltaTime * speed);
+                
+                animator.SetBool("Walk", true); // turn on the animation for walking
+
+                LookTowardsGrid();
+
+            }
+        }
+
+        private void LookTowardsGrid()
+        {
+            Vector3 toPos = 
+                    
+                new Vector3(nextGridDestination.transform.TransformPoint(new Vector3(0, 0)).x, 
+                    0,
+                    nextGridDestination.transform.TransformPoint(new Vector3(0, 0)).z);
+            
+            // y is 0 because the grid is slightly elevated so we need to make it back to 0
+            
+            // the direction to rotate towards
+            Vector3 targetDirection =  toPos
+                                       - transform.position;
+            
+            
+            Quaternion rotation =
+                Quaternion.LookRotation(targetDirection);
+
+
+
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime);
+        }
+
+
     }
     
     
-    
+
     
 
 
