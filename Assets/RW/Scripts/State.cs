@@ -32,12 +32,28 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 {
     public abstract class State
     {
+        
+        // EDITED FOR ENEMY ALSO.
+        // it's rather unoptimized but the project said not to change the tutorial structure much so
+        // that's why i'm changing instead of creating my own generic states.
+        
+        
         protected Character character;
+        protected Enemy enemy;
         protected StateMachine stateMachine;
 
         protected State(Character character, StateMachine stateMachine)
         {
             this.character = character;
+            this.stateMachine = stateMachine;
+            
+        }
+        
+        
+        // overloaded constructor
+        protected State(Enemy enemy, StateMachine stateMachine)
+        {
+            this.enemy = enemy;
             this.stateMachine = stateMachine;
             
         }

@@ -35,7 +35,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public State CurrentState { get; private set; }
         
         public State PreviousState { get; set; }
-
+        
+        
         
         // Initializes & enters the starting state
         public void Initialize(State startingState)

@@ -16,9 +16,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public LayerMask layerMask;
         private bool isSearching;
 
-        public GameObject destinationCube;
+    
 
-        private Vector3 currentDestination;
+        private Vector3 currentDestination, setDestination;
 
         private Coroutine movementCoroutine;
         
@@ -33,15 +33,29 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         [SerializeField]
         private int speed = 3;
-        private void Start()
+        private void Awake()
         {
 
             characterController = GetComponent<CharacterController>();
             animator = GetComponent<Animator>();
-            GeneratePositions();
-            GetStartAndEndGrid(destinationCube.transform.position);
+          
+        
          
            
+        }
+
+        private void Start()
+        {
+            GeneratePositions();
+        }
+
+        public void SetDestination(Vector3 destination) // set a new destination for the A* to know 
+        {
+            setDestination = destination;
+            animator.SetFloat("Forward", 0); // turn off the animation for walking
+
+            
+            GetStartAndEndGrid(destination);
         }
 
 
@@ -54,6 +68,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             foreach (Collider col in Physics.OverlapSphere(pos, 0.5f))
             {
                
+            
 
                 if (col.gameObject.name.Contains("Grid")) // is a grid
                 {
@@ -79,6 +94,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             startingGrid = GetNearestGridToPosition(this.transform.position);
             destinationGrid = GetNearestGridToPosition(pos);
+          
 
             currentDestination = pos;
 
@@ -253,8 +269,13 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public void StepLeastF() // step into the lowest F value grid
         {
 
+            if (destinationGrid == null) // make sure that destination grid is set.
+                return;
+                
             isSearching = true;
 
+   
+            
             if (currentGrid.index != destinationGrid.index)
             {
                 // FINDING THE SMALLEST F OF THE NEAREST GRID WE JUST CHECKED AND CALCULATED.
@@ -337,24 +358,20 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
     
         }
 
-        private void Update()
-        {
 
-            if (currentDestination != destinationCube.transform.position)
+
+
+        public void Move()
+        {
+                     
+            if (currentDestination != setDestination)
             {
-                GetStartAndEndGrid(destinationCube.transform.position);
+                GetStartAndEndGrid(setDestination);
             }
             
             if(!isSearching) // if its not currently alreadey searching
                 StepLeastF();
-
-
-            Move();
-        }
-
-
-        private void Move()
-        {
+            
             if (moving)
             {
 
@@ -365,12 +382,20 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                         nextGridDestination.transform.TransformPoint(new Vector3(0, 0)).z);
                 // y is 0 because the grid is slightly elevated so we need to make it back to 0
                 // to this position
+                
+                transform.position = Vector3.MoveTowards(
+                    transform.position, toPos, Time.deltaTime * speed);
+                
+            
+                animator.SetFloat("Forward", 1); // turn on the animation for walking
+                
+        
 
                 if (Vector3.Distance(transform.position, 
-                        toPos) < 1)
+                        toPos) < 0.5f)
                 {
 
-                    if (nextGridCount != destinationNodes.Count - 1)
+                    if (!(nextGridCount + 1 >= destinationNodes.Count))
                     {
                         nextGridCount++;
                   
@@ -381,7 +406,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                     else
                     {
                         moving = false; // moved finish.
-                        animator.SetBool("Walk", false); // off the animation for walking
+                        Debug.Log("Finish moving");
+                    
+                        animator.SetFloat("Forward", 0); // off the animation for walking
+
+                        return;
                     }
           
                     
@@ -390,10 +419,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 }
 
 
-                transform.position = Vector3.MoveTowards(
-                    transform.position, toPos, Time.deltaTime * speed);
-                
-                animator.SetBool("Walk", true); // turn on the animation for walking
+
+
+
 
                 LookTowardsGrid();
 
@@ -420,7 +448,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
 
 
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 5);
         }
 
 

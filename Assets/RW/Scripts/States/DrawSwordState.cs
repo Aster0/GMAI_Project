@@ -69,7 +69,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         {
             base.PhysicsUpdate();
        
-            Debug.Log("Phys");
+    
         }
 
 
