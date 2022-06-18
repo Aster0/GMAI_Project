@@ -17,6 +17,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             
             if(explored)
                 Gizmos.DrawCube(transform.position, new Vector3(2, 5, 2));
+         
 
             Gizmos.color = Color.red;
             if (!grid.Walkable)

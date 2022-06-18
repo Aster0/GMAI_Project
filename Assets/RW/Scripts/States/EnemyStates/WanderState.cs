@@ -14,7 +14,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
         public override void Enter()
         {
             base.Enter();
-            enemy.aStarPathFinding.SetDestination(new Vector3(4.67f, 0, -4.7f));
+            enemy.aStarPathFinding.SetDestination(new Vector3(5.05f, 0, 1.52f));
         }
 
 
@@ -22,7 +22,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
         {
             base.LogicUpdate();
 
-            /*if (time < 0)
+            if (time < 0)
             {
                 time = 3;
 
@@ -31,7 +31,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                 enemy.aStarPathFinding.SetDestination(new Vector3(randomX,0, randomZ));
             }
 
-            time -= Time.deltaTime;*/
+            time -= Time.deltaTime;
             
             // random wander using A*
             

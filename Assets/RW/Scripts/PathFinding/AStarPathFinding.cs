@@ -244,7 +244,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                             newGridInstance.previousGrid = currentGrid; // update previous grid to the current one as we're
                             // gonna step into this new grid.
 
-                            grid.transform.gameObject.GetComponent<GridInfo>().explored = true;
+                            //grid.transform.gameObject.GetComponent<GridInfo>().explored = true;
                             openGrids.Add(newGridInstance);
                         }
                         
@@ -346,6 +346,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             while (currentNodeHere != startingGrid)
             {
                 destinationNodes.Add(currentNodeHere.previousGrid);
+                
+            
 
                 currentNodeHere = currentNodeHere.previousGrid;
             }
@@ -392,7 +394,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         
 
                 if (Vector3.Distance(transform.position, 
-                        toPos) < 0.5f)
+                        toPos) < 1f)
                 {
 
                     if (!(nextGridCount + 1 >= destinationNodes.Count))

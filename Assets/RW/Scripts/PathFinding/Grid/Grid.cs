@@ -50,7 +50,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             Collider[] hitColliders = Physics.OverlapBox(
                 transform.position, 
-                GridCollider.size / 2, Quaternion.identity);
+                GridCollider.size, Quaternion.identity);
            
             
             Collider[] colliders = Physics.OverlapSphere(transform.position, 1.2f);
