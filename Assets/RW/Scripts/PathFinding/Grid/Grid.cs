@@ -48,13 +48,16 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public void CheckWalkable() // check if current grid is walkable or not.
         {
 
-            RaycastHit m_Hit;
-            Physics.BoxCast(GridCollider.gameObject.transform.position,
-                GridCollider.gameObject.transform.lossyScale / 2,
-                new Vector3(0, -1, 0), out m_Hit, Quaternion.identity, 1500f);
-            
-            if(m_Hit.collider != null)
-                Debug.Log(m_Hit.collider.gameObject);
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f);
+
+            foreach (Collider collider in colliders)
+            {
+                if (collider.tag.Equals("Obstacles"))
+                {
+                    Debug.Log(collider);
+                    Walkable = false;
+                }
+            }
         }
 
         

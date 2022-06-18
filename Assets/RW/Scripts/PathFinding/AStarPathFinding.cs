@@ -152,6 +152,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                  
                         
                 
+                    grid.CheckWalkable();
                     
                     if (grid.Walkable) // if grid is walkable
                     {
@@ -163,7 +164,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                             if (closedGrid.index == grid.index)
                             {
                        
-                                Debug.Log("We searched this before");
+                                
                                 noSearch = true;
                             }
                         }
@@ -240,7 +241,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
                     currentGrid = lowestGrid; // update the new current grid.
         
-                    Debug.Log("Still finding.. " + currentGrid.index + " " + currentGrid.transform.position);
+               
                     closedGrids.Add(lowestGrid); // as we stepped into it, we can close it.
 
                     openGrids.Remove(lowestGrid); // remove from open grid as we have already stepped on it.
