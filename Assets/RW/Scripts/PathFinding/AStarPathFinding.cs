@@ -261,7 +261,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                     }
                     else // if the grid is unwalkable
                     {
-                        /*if (grid.index == destinationGrid.index) // and is a destination grid
+                        if (grid.index == destinationGrid.index) // and is a destination grid
                         {
                        
                             Debug.Log("Found new destination" + grid.index);
@@ -273,7 +273,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                             // the current grid is the previous grid before opening the new adjacent grids.
                             
                             
-                        }*/
+                        }
                     }
                
                 }
@@ -385,10 +385,23 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             destinationNodes.OrderBy(n => n.index);
             destinationNodes.Reverse();
 
+            if (Vector3.Distance(destinationNodes[0].transform.position, transform.position) > 2)
+            {
+                destinationNodes.Remove(destinationNodes[0]);
+            }
 
 
-            nextGridDestination = destinationNodes[0];
-            nextGridCount = 1;
+
+            try
+            {
+                nextGridDestination = destinationNodes[0];
+                nextGridCount = 1;
+            }
+            catch (ArgumentException e) // catching the error if we can't get the first dest because we are using coroutines.
+            {
+               
+            }
+    
             
             
             
