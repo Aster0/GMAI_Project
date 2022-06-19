@@ -6,15 +6,18 @@ using UnityEngine;
 
 namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 {
-    public class AStarPathFinding : MonoBehaviour
+    [Serializable]
+    public class AStarPathFinding 
     {
         public List<Grid> openGrids = new List<Grid>();
         public List<Grid> closedGrids = new List<Grid>();
 
         private List<GridPosition> positionsToCheck = new List<GridPosition>();
-        private Grid startingGrid, currentGrid, destinationGrid;
+        public Grid startingGrid, currentGrid, destinationGrid;
         public LayerMask layerMask;
         private bool isSearching;
+
+        public Transform transform; // parent transform
 
     
 
@@ -23,38 +26,37 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         private Coroutine movementCoroutine;
         
         private bool moving = false;
+        public Rigidbody rb;
 
-        private Animator animator;
-        private CharacterController characterController;
+        public Animator animator { get; set; }
+
         
         private Grid nextGridDestination;
         private int nextGridCount;
-        private List<Grid> destinationNodes;
+        private List<Grid> destinationNodes = new List<Grid>();
 
         [SerializeField]
         private int speed = 3;
-        private void Awake()
+
+        public bool done { get; set; }
+
+
+        public AStarPathFinding()
         {
 
-            characterController = GetComponent<CharacterController>();
-            animator = GetComponent<Animator>();
-          
-        
-         
-           
-        }
-
-        private void Start()
-        {
+      
             GeneratePositions();
+            
         }
+        
 
         public void SetDestination(Vector3 destination) // set a new destination for the A* to know 
         {
-            setDestination = destination;
-            animator.SetFloat("Forward", 0); // turn off the animation for walking
+         
+            //animator.SetFloat("Forward", 0); // turn off the animation for walking
 
-            
+ 
+
             GetStartAndEndGrid(destination);
         }
 
@@ -100,16 +102,15 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             currentGrid = startingGrid;
 
-            openGrids = new List<Grid>(); // reset grids
-            closedGrids = new List<Grid>(); // reset grids
+            openGrids.Clear(); // reset grids
+            closedGrids.Clear(); // reset grids
             
             closedGrids.Add(startingGrid);
             
             isSearching = false;
             moving = false; // reset variables
             
-            if(movementCoroutine != null)
-                StopCoroutine(movementCoroutine);
+          
 
         }
 
@@ -176,7 +177,6 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
          
 
 
-            
            
             
 
@@ -191,14 +191,17 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
 
            
+                
          
 
                 if (grid != null) // if grid is found, sometimes to the left or right or etc might be out of the map so no grid there.
                 {
-                 
+            
                         
                 
                     grid.CheckWalkable();
+                    
+                    
                     
                     if (grid.Walkable) // if grid is walkable
                     {
@@ -244,6 +247,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                             newGridInstance.previousGrid = currentGrid; // update previous grid to the current one as we're
                             // gonna step into this new grid.
 
+
+       
                             //grid.transform.gameObject.GetComponent<GridInfo>().explored = true;
                             openGrids.Add(newGridInstance);
                         }
@@ -253,6 +258,22 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                         
                        
 
+                    }
+                    else // if the grid is unwalkable
+                    {
+                        /*if (grid.index == destinationGrid.index) // and is a destination grid
+                        {
+                       
+                            Debug.Log("Found new destination" + grid.index);
+                            // we just grab the closest grid which is this previous grid as the destination.
+                            destinationGrid = currentGrid;
+                            // as we dont want the AI to stop walking or navigating just because it can't walk to the location
+                            // so we can get as close as possible to the grid.
+                            
+                            // the current grid is the previous grid before opening the new adjacent grids.
+                            
+                            
+                        }*/
                     }
                
                 }
@@ -269,12 +290,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public void StepLeastF() // step into the lowest F value grid
         {
 
+            Debug.Log("Stepping");
             if (destinationGrid == null) // make sure that destination grid is set.
                 return;
                 
             isSearching = true;
 
-   
+            Debug.Log(currentGrid.index + " CURRENT");
+            Debug.Log(destinationGrid.index + " DESTINATION");
             
             if (currentGrid.index != destinationGrid.index)
             {
@@ -308,10 +331,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             }
             else
             {
-             
 
-                if(!moving)
+
+
+                if (!moving)
                     MoveToDestination();
+
 
             }
             
@@ -322,9 +347,19 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             
         }
 
-        private void MoveToDestination()
+        public void MoveToDestination()
         {
-            moving = true;
+
+
+
+            Debug.Log(currentGrid.index);
+            Debug.Log(destinationGrid.index);
+            if (currentGrid.index != destinationGrid.index)
+            {
+                Debug.Log("Return");
+                return;
+            }
+            
             Grid endNode = null; 
             foreach (Grid node in closedGrids)
             {
@@ -332,22 +367,26 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 {
                     endNode = node;
                     break;
-                
+            
                 }
             }
 
             destinationNodes = new List<Grid>();
-        
+    
             Grid currentNodeHere = endNode;
-        
+    
             destinationNodes.Add(endNode);
 
+        
+       
 
+ 
             while (currentNodeHere != startingGrid)
             {
+      
                 destinationNodes.Add(currentNodeHere.previousGrid);
-                
             
+        
 
                 currentNodeHere = currentNodeHere.previousGrid;
             }
@@ -355,8 +394,15 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             destinationNodes.OrderBy(n => n.index);
             destinationNodes.Reverse();
 
+
+
             nextGridDestination = destinationNodes[0];
             nextGridCount = 1;
+            
+            
+            
+            
+            
     
         }
 
@@ -366,16 +412,18 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public void Move()
         {
                      
-            if (currentDestination != setDestination)
+            /*if (currentDestination != setDestination)
             {
                 GetStartAndEndGrid(setDestination);
-            }
+            }*/
             
             if(!isSearching) // if its not currently alreadey searching
                 StepLeastF();
             
-            if (moving)
+            if (destinationNodes.Count > 0) // have destinations to follow
             {
+                
+     
 
                 Vector3 toPos = 
                     
@@ -385,9 +433,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 // y is 0 because the grid is slightly elevated so we need to make it back to 0
                 // to this position
                 
-                transform.position = Vector3.MoveTowards(
-                    transform.position, toPos, Time.deltaTime * speed);
-                
+                //transform.position = Vector3.MoveTowards(
+                   // transform.position, toPos, Time.deltaTime * 5);
+
+                   rb.velocity = (toPos - transform.position).normalized * 4;
             
                 animator.SetFloat("Forward", 1); // turn on the animation for walking
                 
@@ -410,8 +459,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                         moving = false; // moved finish.
                         Debug.Log("Finish moving");
                     
+                        rb.velocity = new Vector3(0,0);
                         animator.SetFloat("Forward", 0); // off the animation for walking
-
+                        done = true;
                         return;
                     }
           

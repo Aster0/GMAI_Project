@@ -10,11 +10,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
         public WanderState wanderState;
 
-        public AStarPathFinding aStarPathFinding;
+        public AStarManager aStarPathFinding;
+
+        public GameObject characterObject;
         
         private void Start()
         {
-            aStarPathFinding = GetComponent<AStarPathFinding>();
+            characterObject = GameObject.Find("Character");
+            aStarPathFinding = GetComponent<AStarManager>();
             stateMachine = new StateMachine();
 
             wanderState = new WanderState(this, stateMachine);

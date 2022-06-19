@@ -51,9 +51,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             Collider[] hitColliders = Physics.OverlapBox(
                 transform.position, 
                 GridCollider.size, Quaternion.identity);
-           
-            
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 1.2f);
+
 
             foreach (Collider collider in hitColliders)
             {
@@ -62,6 +60,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 {
                     //Debug.Log(collider.name + " " + index);
                     Walkable = false;
+                    break;
                 }
             }
         }
