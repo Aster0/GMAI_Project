@@ -33,7 +33,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             if(movementCoroutine != null)
                 StopCoroutine(movementCoroutine);
                 
-            movementCoroutine = StartCoroutine(AiTick());
+            movementCoroutine = StartCoroutine(MovementCoroutine());
         }
 
 
@@ -50,7 +50,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             {
 
 
-
+                // SEE THE EXPLANATION ON THE CODE FOR COROUTINE BELOW.
 
                 if (lastPosition != gameObject.transform.position)
                 {
@@ -71,8 +71,15 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         }
         
-        public IEnumerator AiTick()
+        public IEnumerator MovementCoroutine()
         {
+            // This here needs a coroutine because so we can set a new destination (above's coroutine) while moving to the old's
+            // location. Coroutine lets us do both, something like asynchronous. 
+            // So while waiting for the StartPathFind() method to run to set a new destination on the new
+            // player's position,
+            // this coroutine here is moving to the old player's position. So it never stops and keeps updating.
+            // once we have the new destination, the next frame (yield return null) runs the Move() function so
+            // we build the new set of A* grid points to move to the new player's position.
             while(true)
             {
                 if(aStarManager != null)

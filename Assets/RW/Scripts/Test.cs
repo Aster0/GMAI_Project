@@ -1,38 +1,51 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : Test2
+public class Test : MonoBehaviour
 {
+    public Test2 test;
     // Start is called before the first frame update
     void Start()
     {
-        Enter();
+        test = new Test2();
+
+        StartCoroutine(PlayTest());
     }
 
-    public override void Enter()
+
+    public IEnumerator PlayTest()
     {
-        base.Enter();
+        while (true)
+        {
+            test.Test();
+            yield return new WaitForSeconds(5f);
+        }
         
+    }
+
     
-    }
 }
 
 
-public class Test2 : TestBase
+[Serializable]
+public class Test2 
 {
-    public override void Enter()
+
+    public bool hey;
+    
+    public void Test()
     {
-        base.Enter();
+        if (hey)
+        {
+            Debug.Log("Hi");
+        }
+        else
+        {
+            Debug.Log("Ho");
+        }
         
-       
     }
 }
 
-public class TestBase : MonoBehaviour
-{
-    public virtual void Enter()
-    {
-        Debug.Log("TESTBASE");
-    }
-}
