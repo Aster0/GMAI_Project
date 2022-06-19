@@ -16,10 +16,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         private GameObject character;
 
-        public AStarPathFinding aStarManager;
+        private AStarPathFinding aStarManager;
 
         private Coroutine movementCoroutine;
         private Rigidbody rb;
+
+        private Vector3 lastPosition;
 
         private void Start()
         {
@@ -46,11 +48,16 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             
             while (true)
             {
-     
 
-                
-                
-                aStarManager.SetDestination(gameObject.transform.position);
+
+
+
+                if (lastPosition != gameObject.transform.position)
+                {
+                    aStarManager.SetDestination(gameObject.transform.position);
+                    lastPosition = gameObject.transform.position;
+                }
+          
       
                 
                 

@@ -19,6 +19,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
         {
             base.Enter();
             //enemy.aStarPathFinding.SetDestination(new Vector3(2.67f, 0, 1.91f));
+      
             enemy.StartCoroutine(enemy.aStarPathFinding.StartPathFind(enemy.characterObject));
         }
         

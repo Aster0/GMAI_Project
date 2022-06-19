@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 {
-    [Serializable]
+    
     public class AStarPathFinding 
     {
         public List<Grid> openGrids = new List<Grid>();
@@ -290,14 +290,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public void StepLeastF() // step into the lowest F value grid
         {
 
-            Debug.Log("Stepping");
+  
             if (destinationGrid == null) // make sure that destination grid is set.
                 return;
                 
             isSearching = true;
 
-            Debug.Log(currentGrid.index + " CURRENT");
-            Debug.Log(destinationGrid.index + " DESTINATION");
             
             if (currentGrid.index != destinationGrid.index)
             {
@@ -350,16 +348,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public void MoveToDestination()
         {
 
-
-
-            Debug.Log(currentGrid.index);
-            Debug.Log(destinationGrid.index);
-            if (currentGrid.index != destinationGrid.index)
-            {
-                Debug.Log("Return");
-                return;
-            }
-            
+     
+           
+        
             Grid endNode = null; 
             foreach (Grid node in closedGrids)
             {
@@ -380,7 +371,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         
        
 
- 
+
             while (currentNodeHere != startingGrid)
             {
       
@@ -412,6 +403,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public void Move()
         {
                      
+            Debug.Log(transform.name);
             /*if (currentDestination != setDestination)
             {
                 GetStartAndEndGrid(setDestination);
