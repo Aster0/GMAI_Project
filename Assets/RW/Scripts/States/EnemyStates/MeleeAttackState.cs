@@ -22,8 +22,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             
             enemy.animator.SetTrigger("Melee");
             
-            stateMachine.ChangeState(enemy.seekPlayerState);
- 
+
+
+
+            time = 2;
+
         }
         
 
@@ -33,7 +36,17 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
         {
             base.LogicUpdate();
             
-            
+            if (time < 0)
+            {
+                // many ways of transiting back. we can also check the current animation clip
+                // by doing animator.GetCurrentAnimatorClipInfo(0).
+                // or check the animation timing and set based off it.
+                
+                stateMachine.ChangeState(enemy.seekPlayerState);
+                
+                
+            }
+            time -= Time.deltaTime;
             
 
 

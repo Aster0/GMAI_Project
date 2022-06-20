@@ -23,6 +23,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             //enemy.aStarPathFinding.SetDestination(new Vector3(2.67f, 0, 1.91f));
       
             enemy.StartCoroutine(enemy.aStarPathFinding.StartPathFind(enemy.characterObject));
+            
+            time = 1;
         }
         
 
@@ -60,7 +62,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
 
 
-                        time = 10;
+                        time = 1;
               
                         break; // break out of iteration. since we found plyaer.
                     
