@@ -416,7 +416,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public void Move()
         {
                      
-            Debug.Log(transform.name);
+        
             /*if (currentDestination != setDestination)
             {
                 GetStartAndEndGrid(setDestination);
