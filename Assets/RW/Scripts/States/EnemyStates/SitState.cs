@@ -16,7 +16,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
         {
             base.Enter();
             
-            
+            DisplayOnUI(UIManager.Alignment.Right);
             // sit down
             enemy.animator.SetBool("Sit", true);
            

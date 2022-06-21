@@ -18,7 +18,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
         public override void Enter()
         {
             base.Enter();
-         
+            
+            DisplayOnUI(UIManager.Alignment.Right);
             
             enemy.animator.SetTrigger("Melee");
             
@@ -35,6 +36,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
          public override void LogicUpdate()
         {
             base.LogicUpdate();
+            
+           
             
             if (time < 0)
             {

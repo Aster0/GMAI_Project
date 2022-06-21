@@ -15,6 +15,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
         public override void Enter()
         {
             base.Enter();
+            DisplayOnUI(UIManager.Alignment.Right);
             // idle state animation using animation blend.
             enemy.animator.SetFloat("Forward", 0);
             enemy.animator.SetFloat("Side", 0);

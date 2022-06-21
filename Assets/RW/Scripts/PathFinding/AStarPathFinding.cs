@@ -33,7 +33,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         
         private Grid nextGridDestination;
         private int nextGridCount;
-        private List<Grid> destinationNodes = new List<Grid>();
+        private List<Grid> destinationGrids = new List<Grid>();
 
         [SerializeField]
         private int speed = 3;
@@ -94,18 +94,18 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             
 
-            startingGrid = GetNearestGridToPosition(this.transform.position);
-            destinationGrid = GetNearestGridToPosition(pos);
+            startingGrid = GetNearestGridToPosition(this.transform.position); // getting the startingGrid using the current position
+            destinationGrid = GetNearestGridToPosition(pos); // getting the destination using the vector3 from the method parameter 
           
 
-            currentDestination = pos;
+            currentDestination = pos; 
 
-            currentGrid = startingGrid;
+            currentGrid = startingGrid; // the current grid is the starting grid, because... yeah.. we're starting here..
 
             openGrids.Clear(); // reset grids
             closedGrids.Clear(); // reset grids
             
-            closedGrids.Add(startingGrid);
+            closedGrids.Add(startingGrid); // we close the starting grid because we just explored it.
             
             isSearching = false;
             moving = false; // reset variables
@@ -120,28 +120,31 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             
 
-            Collider nearestCollider = FindNearestGridToPosition(pos);
+            Collider nearestCollider = FindNearestGridToPosition(pos); // to find the nearest grid's collider
+            // to the inputted pos (from method parameter)
             
 
-            if (nearestCollider != null)
+            if (nearestCollider != null) // a null check to make sure we found a collider 
             {
-                Grid gridFound = nearestCollider.GetComponent<GridInfo>().grid;
+                Grid gridFound = nearestCollider.GetComponent<GridInfo>().grid; // get the grid's GridInfo component.
+                // so we can get the grid info.
+                
                 //Debug.Log("Grid Found: Grid#" + gridFound.index);
 
-                return gridFound;
+                return gridFound; // return the grid found.
           
                 
          
             }
           
             
-            Debug.Log("Unable to find the nearest collider somehow.. " + pos);
+            Debug.Log("Unable to find the nearest collider somehow.. " + pos); // error message
             
 
             return null;
         }
 
-        public void GeneratePositions()
+        public void GeneratePositions() // to generate the different neighbouring grids we need to check around the current grid.
         {
             GridManager gridManager = GridManager.Instance;
             Vector3 colliderSize = gridManager.gridCubeCollider.size;
@@ -173,13 +176,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public void SearchPath(Vector3 destination)
         {
       
-
-         
-
-
-           
             
-
 
 
             foreach (GridPosition gridPosition in positionsToCheck) // check all the grids around the current grid position.
@@ -188,7 +185,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
           
                 
                 Grid grid = GridManager.Instance.FindAtPositionGrid(currentGrid.transform.position + gridPosition.pos);
-
+                // find the grid at said neighbouring position
 
            
                 
@@ -199,38 +196,38 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             
                         
                 
-                    grid.CheckWalkable();
+                    grid.CheckWalkable(); // check if grid is walkable (if there's no obstacles there)
                     
                     
                     
                     if (grid.Walkable) // if grid is walkable
                     {
 
-                        bool noSearch = false;
+                        bool noSearch = false; // boolean to tell us if we should search this current grid or not. 
                 
-                        foreach (Grid closedGrid in closedGrids)
+                        foreach (Grid closedGrid in closedGrids) // if the grid is in the closed grid
                         {
-                            if (closedGrid.index == grid.index)
+                            if (closedGrid.index == grid.index) // and if its the current grid  we're checking..
                             {
                        
                                 
-                                noSearch = true;
+                                noSearch = true; // we don't search it
                             }
                         }
                 
-                        foreach (Grid openGrid in openGrids)
+                        foreach (Grid openGrid in openGrids) // if the grid is in the open grid
                         {
-                            if (openGrid.index == grid.index)
+                            if (openGrid.index == grid.index)  // and if its the current grid  we're checking..
                             {
                                
                                 
-                                noSearch = true;
+                                noSearch = true; // we don't search it
                             }
                         }
                         
          
 
-                        if (!noSearch)
+                        if (!noSearch) // only search if noSearch is false.
                         {
                             Grid newGridInstance = new Grid(); // so this instance is unique to this current pathfinder,
                             // as other pathfinders might have different f, g, h calculations to the destination.
@@ -239,9 +236,13 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                             newGridInstance.index = grid.index;
                     
                             newGridInstance.g = newGridInstance.CalculateG(currentGrid, gridPosition.gridCost);
+                            // g cost = the cost we have used until now.. so that's why currentGrid + the new grid G cost.
+                            
                             newGridInstance.h = newGridInstance.CalculateH(destination);
+                            // h cost = the distance from this grid, to the destination grid using Euclidean in our case.
 
                             newGridInstance.f = newGridInstance.g + newGridInstance.h;
+                            // f = g + h.
 
                 
                             newGridInstance.previousGrid = currentGrid; // update previous grid to the current one as we're
@@ -333,7 +334,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
 
                 if (!moving)
-                    MoveToDestination();
+                    FindGridPath();
 
 
             }
@@ -345,56 +346,61 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             
         }
 
-        public void MoveToDestination()
+        public void FindGridPath()  // to find the grids we need to take on the path to the destination.
         {
 
      
            
         
             Grid endNode = null; 
-            foreach (Grid node in closedGrids)
+            foreach (Grid node in closedGrids) // we iterate the closed grid
             {
-                if (node.index == destinationGrid.index)
+                if (node.index == destinationGrid.index) // and try to find the end node that we have explored in the closed list.
                 {
-                    endNode = node;
+                    endNode = node; // then we assign it to a variable so now we have an instance of it.
                     break;
             
                 }
             }
 
-            destinationNodes = new List<Grid>();
+            destinationGrids = new List<Grid>(); // new list to store all the destination grids.
     
-            Grid currentNodeHere = endNode;
+            Grid currentGridHere = endNode; // for us to use to go previous nodes from the end node
+                                            // until we find the starting node.
     
-            destinationNodes.Add(endNode);
+            destinationGrids.Add(endNode); // add the end node to the destination grids
 
         
        
 
 
-            while (currentNodeHere != startingGrid)
+            while (currentGridHere != startingGrid) // iterate so as long as the currentGridHere isn't startingGrid, we keep going
             {
       
-                destinationNodes.Add(currentNodeHere.previousGrid);
+                destinationGrids.Add(currentGridHere.previousGrid); // add the previous grid 
             
         
 
-                currentNodeHere = currentNodeHere.previousGrid;
+                currentGridHere = currentGridHere.previousGrid; // update the currentGridHere as the previous grid
+                // so the next iteration, it keeps going back and back until we hit the starting node,
+                // then we know the path.
             }
 
-            destinationNodes.OrderBy(n => n.index);
-            destinationNodes.Reverse();
+ 
+            destinationGrids.Reverse(); // since we saved from the end grid to the start grid..
+            // we need to reverse so it starts from the start node to the end grid.
+            // so now we have a viable path to the end grid.
 
-            if (Vector3.Distance(destinationNodes[0].transform.position, transform.position) > 2)
+            if (Vector3.Distance(destinationGrids[0].transform.position, transform.position) > 2)
             {
-                destinationNodes.Remove(destinationNodes[0]);
+                destinationGrids.Remove(destinationGrids[0]);
             }
 
 
 
             try
             {
-                nextGridDestination = destinationNodes[0];
+                nextGridDestination = destinationGrids[0];
                 nextGridCount = 1;
             }
             catch (ArgumentException e) // catching the error if we can't get the first dest because we are using coroutines.
@@ -425,7 +431,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             if(!isSearching) // if its not currently alreadey searching
                 StepLeastF();
             
-            if (destinationNodes.Count > 0) // have destinations to follow
+            if (destinationGrids.Count > 0) // have destinations to follow
             {
                 
      
@@ -451,12 +457,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                         toPos) < 1f)
                 {
 
-                    if (!(nextGridCount + 1 >= destinationNodes.Count))
+                    if (!(nextGridCount + 1 >= destinationGrids.Count))
                     {
                         nextGridCount++;
                   
 
-                        nextGridDestination = destinationNodes[nextGridCount];
+                        nextGridDestination = destinationGrids[nextGridCount];
                    
                     }
                     else

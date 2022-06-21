@@ -23,11 +23,16 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         private Vector3 lastPosition;
 
-        private void Start()
+        private void Awake()
         {
             character = GameObject.Find("Character");
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
+        }
+
+        private void Start()
+        {
+         
             
             
             if(movementCoroutine != null)

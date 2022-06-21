@@ -7,6 +7,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
     {
 
         private float time;
+        private Coroutine seekCoroutine;
         
 
         private Vector3 previousWanderDestination;
@@ -22,18 +23,23 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             
             //enemy.aStarPathFinding.SetDestination(new Vector3(2.67f, 0, 1.91f));
       
-            enemy.StartCoroutine(enemy.aStarPathFinding.StartPathFind(enemy.characterObject));
+            seekCoroutine = enemy.StartCoroutine(enemy.aStarPathFinding.StartPathFind(enemy.characterObject));
             
             time = 1;
         }
-        
 
 
+        public override void Exit()
+        {
+            base.Exit();
+            
+            enemy.StopCoroutine(seekCoroutine); // stop because we're exiting out of seek.
+        }
 
-         public override void LogicUpdate()
+        public override void LogicUpdate()
         {
             base.LogicUpdate();
-
+       
 
 
             if (time < 0)
