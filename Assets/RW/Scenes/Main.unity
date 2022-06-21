@@ -1301,6 +1301,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aStarPathFinding: {fileID: 0}
   characterObject: {fileID: 0}
+  animator: {fileID: 0}
+  rightShoulder: {fileID: 1847476894}
 --- !u!114 &389763298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6432,6 +6434,12 @@ Transform:
   m_Father: {fileID: 241515156}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1847476894 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7883749328917080035, guid: 491f0e8da29135d488bd72d63a5455d2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1400739268}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1880615392
 PrefabInstance:
   m_ObjectHideFlags: 0
