@@ -32,60 +32,38 @@ using UnityEngine;
 
 namespace RayWenderlich.Unity.StatePatternInUnity
 {
-    public class GroundedState : State
+    public class ShealthSwordState : GroundedState // so still can move while sword is drawn
     {
-        protected float speed;
-        protected float rotationSpeed;
 
-        private float horizontalInput;
-        private float verticalInput;
-
-        private bool drawSwordKeyPress;
-
-        protected bool swordDrawn; // if the sword is already drawn or not.
-
-        public GroundedState(Character character, StateMachine stateMachine) : base(character, stateMachine)
+ 
+        public ShealthSwordState(Character character, StateMachine stateMachine) : base(character, stateMachine)
         {
         }
         
         public override void Enter()
         {
-            base .Enter();
-            horizontalInput = verticalInput = 0.0f;
-        }
-        
-        public override void Exit()
-        {
-            base.Exit();
-            character.ResetMoveParams();
-        }
+            base.Enter();
+            speed = character.MovementSpeed;
+            rotationSpeed = character.RotationSpeed; 
+            // make sure we set the movement speed incase it was resetted before this state
+            
+       
+            character.SetAnimationBool(character.sheathSwordParam, true);
+            character.SetAnimationBool(character.drawSwordParam, false); // set draw sword to false.
 
-        public override void HandleInput()
-        {
-            base.HandleInput();
-            verticalInput = Input.GetAxis("Vertical");
-            horizontalInput = Input.GetAxis("Horizontal");
+            character.SheathWeapon(); // draw current weapon
+            
+            Debug.Log("SHEATHHH");
+            
+            stateMachine.ChangeState(character.unarmedIdle); // change to unarmed idle
+            // as we have just sheathed our sword.
 
-            drawSwordKeyPress = Input.GetButton("Fire1");
-        }
-
-        public override void LogicUpdate()
-        {
-            base.LogicUpdate();
-
-            if (drawSwordKeyPress && !swordDrawn)
-            {
-                stateMachine.ChangeState(character.drawSword);
-            }
         }
 
-        public override void PhysicsUpdate()
-        {
-            base.PhysicsUpdate();
-           
-            character.Move(verticalInput * speed, 
-                horizontalInput * rotationSpeed);
-        }
+
+
+
+
 
 
 

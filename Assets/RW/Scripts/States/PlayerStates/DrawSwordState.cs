@@ -35,7 +35,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
     public class DrawSwordState : GroundedState // so still can move while sword is drawn
     {
 
-        private bool jump, crouch;
+ 
         public DrawSwordState(Character character, StateMachine stateMachine) : base(character, stateMachine)
         {
         }
@@ -45,32 +45,23 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             base.Enter();
             speed = character.MovementSpeed;
             rotationSpeed = character.RotationSpeed; 
-            swordDrawn = true; // so we can't draw it again.
+            // make sure we set the movement speed incase it was resetted before this state
+            
+            character.SetAnimationBool(character.sheathSwordParam, false); // set sheathing to false.
             character.SetAnimationBool(character.drawSwordParam, true);
 
             character.Equip(); // draw current weapon
+            
+            
+            stateMachine.ChangeState(character.armedIdle); // change to armed idle
+            // as we have just drew our sword.
 
         }
-        public override void HandleInput()
-        {
-            base.HandleInput();
-            crouch = character.CheckCrouchInput();
-            jump = character.CheckJumpInput();
-        }
 
-        public override void LogicUpdate()
-        {
-            base.LogicUpdate();
-           
-            character.CheckPlayerJumpAndCrouch(jump, crouch, stateMachine, this);
-        }
 
-        public override void PhysicsUpdate()
-        {
-            base.PhysicsUpdate();
-       
-    
-        }
+
+
+
 
 
 

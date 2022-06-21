@@ -42,6 +42,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public DuckingState ducking; 
         public JumpingState jumping;
         public DrawSwordState drawSword;
+        public UnarmedIdleState unarmedIdle;
+        public ArmedIdleState armedIdle;
+        public PunchState punch;
+        public SwingSwordState swingSword;
+        public ShealthSwordState sheathSword;
 
 
 #pragma warning disable 0649
@@ -75,6 +80,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         private int verticalMoveParam = Animator.StringToHash("V_Speed");
         private int shootParam = Animator.StringToHash("Shoot");
         private int hardLanding = Animator.StringToHash("HardLand");
+     
 
         public GameObject weaponPrefab;
         #endregion
@@ -86,7 +92,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public float DiveForce => data.diveForce;
         public float JumpForce => data.jumpForce;
         public float MovementSpeed => data.movementSpeed;
+
+        public float StateMovementSpeed; // stores the current super state's movement speed (armed/idle)
         public float CrouchSpeed => data.crouchSpeed;
+        
+        public float MovementSpeedSword => data.movementSpeedSword; // when equipped with a sword
         public float RotationSpeed => data.rotationSpeed;
         public float CrouchRotationSpeed => data.crouchRotationSpeed;
         public GameObject MeleeWeapon => data.meleeWeapon;
@@ -98,6 +108,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public int isMelee => Animator.StringToHash("IsMelee");
         public int crouchParam => Animator.StringToHash("Crouch");
         public int drawSwordParam => Animator.StringToHash("DrawMelee");
+        public int sheathSwordParam => Animator.StringToHash("SheathMelee");
 
         public float ColliderSize
         {
@@ -232,11 +243,17 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
             jumping = new JumpingState(this, movementSM);
             drawSword = new DrawSwordState(this, movementSM);
-            
+            unarmedIdle = new UnarmedIdleState(this, movementSM);
+            punch = new PunchState(this, movementSM);
+            armedIdle = new ArmedIdleState(this, movementSM);
+
+            swingSword = new SwingSwordState(this, movementSM);
+
+            sheathSword = new ShealthSwordState(this, movementSM);
 
             Equip(weaponPrefab); // equip
             SheathWeapon(); // then sheath the weapon behind the back
-            movementSM.Initialize(standing);
+            movementSM.Initialize(unarmedIdle);
         }
         
         private void Update()
@@ -272,6 +289,32 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         {
    
             return Input.GetButtonDown("Fire3"); 
+        }
+
+        public void TriggerSwingOrPunchAnimation(params int[] animations) // to trigger the animations of swing or punch.
+        // parameter means we can parse as many animation index as we want when using this method.
+        // this allows for a more dynamic coding for in the future when we have more animations.
+        {
+            
+            int chance = Random.Range(0, 100);
+
+
+            int animationToTrigger;
+            
+            // basically have a 50/50 chance to have a right or left punch animation.
+            if (chance <= 50)
+            {
+                animationToTrigger = animations[0];
+            }
+            else
+            {
+                animationToTrigger = animations[1];
+            }
+            
+            TriggerAnimation(animationToTrigger);
+            // trigger the animation.
+
+           
         }
 
 

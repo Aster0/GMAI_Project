@@ -20,6 +20,7 @@ MonoBehaviour:
     type: 3}
   movementSpeed: 200
   crouchSpeed: 100
+  movementSpeedSword: 70
   crouchColliderHeight: 2.5
   normalColliderHeight: 3
   rotationSpeed: 180
