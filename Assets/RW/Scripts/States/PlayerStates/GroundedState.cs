@@ -44,7 +44,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
 
         private bool belowCeiling;
-        private bool crouchHeld, jumpHeld, jumped;
+        private bool crouchHeld, jumpHeld;
         
         private bool grounded;
         private int jumpParam = Animator.StringToHash("Jump");
@@ -86,7 +86,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
 
 
-            Debug.Log(speed);
+      
 
             if (crouchHeld) // if crouch is pressed,
             {
@@ -125,20 +125,20 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             {
                 grounded = false;
                 // set the player to not grounded as they just jumped.
-                jumped = true;
+                character.Jumped = true;
                 
                 Jump(); // call the jump method to jump.
                 
             }
             
             
-            if (grounded && jumped) // checks if a player has landed look @PhysicsUpdate. also check jumped because we only want this if clause to run after jump and not everytime.
+            if (grounded && character.Jumped) // checks if a player has landed look @PhysicsUpdate. also check jumped because we only want this if clause to run after jump and not everytime.
             {
                 // if yes, we use the land animation and play a sound.
                 character.TriggerAnimation(landParam);
                 SoundManager.Instance.PlaySound(SoundManager.Instance.landing);
                 
-                jumped = false; // landed, so we reset to false.
+                character.Jumped = false; // landed, so we reset to false.
                 Debug.Log("Landed");
      
             }

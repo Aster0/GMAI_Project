@@ -87,6 +87,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
         #region Properties
 
+        public bool Jumped { get; set; } // if player has jumped
         public float NormalColliderHeight => data.normalColliderHeight;
         public float CrouchColliderHeight => data.crouchColliderHeight;
         public float DiveForce => data.diveForce;
