@@ -357,8 +357,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
                      
                     Enemy enemy = collider.GetComponent<Enemy>();
-                     
-                    enemy.stateMachine.ChangeState(enemy.hurtState);
+                    
+                    if(enemy.stateMachine.CurrentState != enemy.dieState) // not dead,
+                        enemy.stateMachine.ChangeState(enemy.hurtState); // we hurt!
                 }
             }
 
