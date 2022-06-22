@@ -8,6 +8,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
         private float time;
         private Coroutine seekCoroutine;
+        private bool justThrown; // to see if the player was just thrown by the enemy.
         
 
         private Vector3 previousWanderDestination;
@@ -64,11 +65,17 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                             {
                                 // melee attack
                                 stateMachine.ChangeState(enemy.meleeAttackState);
+                                justThrown = false; // we can safely say that just thrown is false
+                                // because we're entering a melee attack instead of the grappling attack.
+                                // so no throwing here.
+                                // this makes it so it doesn't grapple twice,
+                                // might be unfair to the player.
                             }
                             else // last 20% chance
                             {
+                                if(!justThrown) // if not just thrown
                                 // grapple
-                                stateMachine.ChangeState(enemy.grappleAttackState);
+                                    stateMachine.ChangeState(enemy.grappleAttackState);
                             }
 
 
@@ -76,6 +83,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                             time = 1;
               
                             break; // break out of iteration. since we found plyaer.
+                        }
+                        else
+                        {
+                            justThrown = true; // as the player now is being
+                            // thrown, we can say just thrown is true.
                         }
                             
                             
