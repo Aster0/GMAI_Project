@@ -448,6 +448,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                    // transform.position, toPos, Time.deltaTime * 5);
 
                    rb.velocity = (toPos - transform.position).normalized * 4;
+                   // we use velocity instead of transform.position because we don't need to constantly update
+                   // the new location to move slowly with Time.deltaTime.
+                   // with velocity, we can just push the velocity towards a certain direction and do it
+                   // only once.
             
                 animator.SetFloat("Forward", 1); // turn on the animation for walking
                 
