@@ -277,7 +277,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             
             // any state
 
-            if (Health <= 0) // less than equal 0 (meaning player should change to die state)
+            if (Health <= 0 && movementSM.CurrentState != die) // less than equal 0 (meaning player should change to die state)
+            // and player isn't already dead.
             {
                 movementSM.ChangeState(die);
             }
@@ -337,6 +338,31 @@ namespace RayWenderlich.Unity.StatePatternInUnity
            
         }
 
+        public void HurtEnemy() // method to hurt an enemy
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 3); // hit radius of 3
+
+
+            foreach (Collider collider in colliders)
+            {
+                // this iteration is so we can scale to hitting
+                // other entities in the future.
+                // of course, we can just call the character object in the enemy instance
+                // but there's no future proof in that.
+                // we can also hit multiple "characters" like this then.
+
+
+                if (collider.CompareTag("Enemy")) // if its an enemy
+                {
+
+                     
+                    Enemy enemy = collider.GetComponent<Enemy>();
+                     
+                    enemy.stateMachine.ChangeState(enemy.hurtState);
+                }
+            }
+
+        }
 
         public void CheckPlayerJumpAndCrouch(bool jump, bool crouch, StateMachine stateMachine, State previousState)
         {

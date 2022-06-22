@@ -45,6 +45,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
                 // when cooldown is over, we swap back to the unarmed idle state.
                 // where we are ready to punch again
                 
+                character.HurtEnemy();
                 stateMachine.ChangeState(character.unarmedIdle);
             }
 

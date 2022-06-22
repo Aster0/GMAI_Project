@@ -8,11 +8,16 @@ namespace RayWenderlich.Unity.StatePatternInUnity
     {
         public StateMachine stateMachine ;
 
+        // we can assign the start health in the inspector.
+        public float Health; 
+
         public SeekPlayerState seekPlayerState;
         public StandState standState;
         public SitState sitState;
         public MeleeAttackState meleeAttackState;
         public GrappleAttackState grappleAttackState;
+        public EnemyStates.HurtState hurtState;
+        public EnemyStates.DieState dieState;
 
         public AStarManager aStarPathFinding;
 
@@ -36,6 +41,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             seekPlayerState = new SeekPlayerState(this, stateMachine);
             sitState = new SitState(this, stateMachine);
             standState = new StandState(this, stateMachine);
+            dieState = new EnemyStates.DieState(this, stateMachine); // EnemyStates.DieState because its a different 
+            // namespace from the player's die state class.
+            hurtState = new EnemyStates.HurtState(this, stateMachine); // EnemyStates.HurtState because its a different 
+            // namespace from the player's hurt state class.
             
             stateMachine.Initialize(standState);
         }
@@ -44,6 +53,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             stateMachine.CurrentState.HandleInput();
 
             stateMachine.CurrentState.LogicUpdate();
+            
+            // any state
+
+            if (Health <= 0 && stateMachine.CurrentState != dieState) // less than equal 0 (meaning player should change to die state)
+                // and player isn't already dead.
+            {
+                stateMachine.ChangeState(dieState);
+            }
         }
 
         private void FixedUpdate()

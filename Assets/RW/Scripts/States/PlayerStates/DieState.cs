@@ -26,7 +26,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             
             // this state is changed by the attacking enemy. 
             // this is why this state can trigger from any states.
-            character.SetAnimationBool(dieParam, true);
+            character.TriggerAnimation(dieParam);
 
             time = 3; // give it a  3 seconds cooldown
             

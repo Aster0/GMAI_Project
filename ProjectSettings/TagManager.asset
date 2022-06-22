@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Shootable
   - Obstacles
+  - Enemy
   layers:
   - Default
   - TransparentFX

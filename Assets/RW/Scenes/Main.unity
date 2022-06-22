@@ -1286,7 +1286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &355025219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1473,10 +1473,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea8b46899a4456ea279f1ae49605d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health: 0
   aStarPathFinding: {fileID: 0}
   characterObject: {fileID: 0}
   animator: {fileID: 0}
   rightShoulder: {fileID: 1847476894}
+  rb: {fileID: 0}
 --- !u!114 &389763298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5415,6 +5417,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EnemyNPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 491f0e8da29135d488bd72d63a5455d2,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 491f0e8da29135d488bd72d63a5455d2,
         type: 3}
