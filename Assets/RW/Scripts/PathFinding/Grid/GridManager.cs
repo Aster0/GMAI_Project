@@ -71,7 +71,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
                     grid.transform = gridCube.transform;
                     
-                    grid.CheckWalkable();
+                    //grid.CheckWalkable(); // this was for testing, we only want to check if its walkable 
+                    // when the AI generates a path. this is because the path might change,
+                    // obstacles might change.
 
                     gridCube.name = "GridCube" + gridCount;
 

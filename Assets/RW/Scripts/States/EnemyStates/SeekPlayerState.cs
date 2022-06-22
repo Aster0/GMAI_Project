@@ -50,27 +50,36 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                 {
                     if (collider.name.Equals("Character"))
                     {
-                        enemy.animator.SetFloat("Forward", 0); // stop walk animation
+                        Character character = collider.GetComponent<Character>();
 
-                        int chance = Random.Range(0, 100);
+                        if (character.movementSM.CurrentState != character.getThrown) // if its not currently in the get thrown state
+                        // because we don't want to hit while the player is down, we want a short cool down.
+                        {
+                            enemy.animator.SetFloat("Forward", 0); // stop walk animation
+
+                            int chance = Random.Range(0, 100);
 
            
-                        if (chance <= 80) // 80% chance
-                        {
-                            // melee attack
-                            stateMachine.ChangeState(enemy.meleeAttackState);
-                        }
-                        else // last 20% chance
-                        {
-                            // grapple
-                            stateMachine.ChangeState(enemy.grappleAttackState);
-                        }
+                            if (chance <= 80) // 80% chance
+                            {
+                                // melee attack
+                                stateMachine.ChangeState(enemy.meleeAttackState);
+                            }
+                            else // last 20% chance
+                            {
+                                // grapple
+                                stateMachine.ChangeState(enemy.grappleAttackState);
+                            }
 
 
 
-                        time = 1;
+                            time = 1;
               
-                        break; // break out of iteration. since we found plyaer.
+                            break; // break out of iteration. since we found plyaer.
+                        }
+                            
+                            
+                        
                     
                     }
                 }

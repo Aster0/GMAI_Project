@@ -47,6 +47,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public PunchState punch;
         public SwingSwordState swingSword;
         public ShealthSwordState sheathSword;
+        public HurtState hurt;
+        public GetThrownState getThrown;
 
 
 #pragma warning disable 0649
@@ -90,6 +92,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public bool Jumped { get; set; } // if player has jumped
         public float NormalColliderHeight => data.normalColliderHeight;
         public float CrouchColliderHeight => data.crouchColliderHeight;
+        public float FallColliderHeight => data.fallColliderHeight;
         public float DiveForce => data.diveForce;
         public float JumpForce => data.jumpForce;
         public float MovementSpeed => data.movementSpeed;
@@ -236,6 +239,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
         private void Start()
         {
+          
             movementSM = new StateMachine();
 
             standing = new StandingState (this , movementSM);
@@ -251,6 +255,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             swingSword = new SwingSwordState(this, movementSM);
 
             sheathSword = new ShealthSwordState(this, movementSM);
+            hurt = new HurtState(this, movementSM);
+            getThrown = new GetThrownState(this, movementSM);
 
             Equip(weaponPrefab); // equip
             SheathWeapon(); // then sheath the weapon behind the back

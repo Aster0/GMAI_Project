@@ -925,7 +925,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9443b9f471dba442ad0ff6bc40d54f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: []
 --- !u!1 &289393948
 GameObject:
   m_ObjectHideFlags: 0
@@ -3186,6 +3185,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -3264926968328976238, guid: acd565c301615984294de13396cc7746,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstacles
       objectReference: {fileID: 0}
     - target: {fileID: -3264926968328976238, guid: acd565c301615984294de13396cc7746,
         type: 3}

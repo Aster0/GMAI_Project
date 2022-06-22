@@ -20,9 +20,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
         public Animator animator;
 
-        public GameObject rightShoulder; 
+        public GameObject rightShoulder;
+        public Rigidbody rb;
         private void Start()
         {
+            rb = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
             characterObject = GameObject.Find("Character");
             aStarPathFinding = GetComponent<AStarManager>();

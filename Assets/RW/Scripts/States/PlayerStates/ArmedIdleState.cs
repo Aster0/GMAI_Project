@@ -11,7 +11,16 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         {
         }
 
-        
+        public override void Enter()
+        {
+            base.Enter();
+
+            stateMachine.PreviousState = this; // set this as previous state
+            // in enter() because when we swing the sword,
+            // and while swinging, the player gets hurt,
+            // the previous state should be armed idle and not swing sword state.
+        }
+
         // override the virtual method on specific inputs we want to handle for this state. 
         public override void HandleInput()
         {
