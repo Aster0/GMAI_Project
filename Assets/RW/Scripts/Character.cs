@@ -49,7 +49,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public ShealthSwordState sheathSword;
         public HurtState hurt;
         public GetThrownState getThrown;
+        public DieState die;
 
+        
 
 #pragma warning disable 0649
         [SerializeField]
@@ -89,6 +91,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
         #region Properties
 
+        public int Health { get; set; } // player's health.
         public bool Jumped { get; set; } // if player has jumped
         public float NormalColliderHeight => data.normalColliderHeight;
         public float CrouchColliderHeight => data.crouchColliderHeight;
@@ -239,6 +242,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
         private void Start()
         {
+            Health = data.startHealth; // initialize start health of player.
           
             movementSM = new StateMachine();
 
@@ -257,6 +261,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             sheathSword = new ShealthSwordState(this, movementSM);
             hurt = new HurtState(this, movementSM);
             getThrown = new GetThrownState(this, movementSM);
+            die = new DieState(this, movementSM);
 
             Equip(weaponPrefab); // equip
             SheathWeapon(); // then sheath the weapon behind the back
@@ -268,6 +273,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             movementSM.CurrentState.HandleInput();
 
             movementSM.CurrentState.LogicUpdate();
+            
+            
+            // any state
+
+            if (Health <= 0) // less than equal 0 (meaning player should change to die state)
+            {
+                movementSM.ChangeState(die);
+            }
         }
 
         private void FixedUpdate()

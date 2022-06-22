@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace RayWenderlich.Unity.StatePatternInUnity
 {
-    public class GetThrownState : State // can't move during get thrown. so inherit just state.
+    public class DieState : State // can't move during get thrown. so inherit just state.
     {
-        private int thrownParam = Animator.StringToHash("Fall");
+        private int dieParam = Animator.StringToHash("Die");
 
         private float time; 
         // constructor receive and to fill in the base class' constructor values.
-        public GetThrownState(Character character, StateMachine stateMachine) : base(character, stateMachine)
+        public DieState(Character character, StateMachine stateMachine) : base(character, stateMachine)
         {
         }
 
@@ -26,7 +26,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             
             // this state is changed by the attacking enemy. 
             // this is why this state can trigger from any states.
-            character.SetAnimationBool(thrownParam, true);
+            character.SetAnimationBool(dieParam, true);
 
             time = 3; // give it a  3 seconds cooldown
             
@@ -37,31 +37,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             // we don't want to use the character.ColliderSize because it changes the center too.
             // we just want to change the height, that's all.
 
-            character.Health--; // minus player health by 1.
+  
 
         }
-
-        public override void Exit()
-        {
-            base.Exit();
-            character.ColliderSize = character.NormalColliderHeight ; // set back to normal collider height
-        }
+        
 
 
-        public override void LogicUpdate()
-        {
-            base.LogicUpdate();
-
-
-            if (time < 0) // when cool down is over
-            {
-                // then we swap back to previous state.
-                
-                character.SetAnimationBool(thrownParam, false);
-                stateMachine.ChangeState(stateMachine.PreviousState);
-            }
-
-            time -= Time.deltaTime;
-        }
     }
 }

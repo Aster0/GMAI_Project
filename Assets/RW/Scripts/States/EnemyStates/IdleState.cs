@@ -38,8 +38,13 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             {
                 if (collider.name.Equals("Character"))
                 {
-                    stateMachine.ChangeState(enemy.seekPlayerState);
-                    break;
+                    Character character = collider.GetComponent<Character>();
+                    if (character.movementSM.CurrentState != character.die) // if player isn't dead
+                    {
+                        stateMachine.ChangeState(enemy.seekPlayerState); // , we seek
+                        break;
+                    }
+             
                     
                 }
             }

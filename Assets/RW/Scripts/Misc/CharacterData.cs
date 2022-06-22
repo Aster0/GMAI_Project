@@ -36,6 +36,7 @@ public class CharacterData : ScriptableObject
     public GameObject shootableObject;
     public GameObject staticShootable;
     public GameObject meleeWeapon;
+    public int startHealth = 3;
     public float movementSpeed = 150f;
     public float crouchSpeed = 50f;
     public float movementSpeedSword = 10f; // when equipped with a sword

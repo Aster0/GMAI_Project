@@ -29,7 +29,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
             time = 1; // give it a second cooldown
 
-
+            character.Health--; // minus player health by 1.
         }
         
         

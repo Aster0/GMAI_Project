@@ -42,9 +42,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             {
                 if (collider.name.Equals("Character"))
                 {
+                    Character character = collider.GetComponent<Character>();
+                    if (character.movementSM.CurrentState != character.die) // if player isn't dead
+                    {
+                        foundPlayer = true; // if we found the player,
+                        return; // we return and do not proceed below.
+                    }
 
-                    foundPlayer = true; // if we found the player,
-                    return; // we return and do not proceed below.
+            
 
                 }
             }
