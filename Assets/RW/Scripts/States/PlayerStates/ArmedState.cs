@@ -39,9 +39,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         {
             base.LogicUpdate();
             
-            if (sheathSwordKey)
+            
+            if (sheathSwordKey) // if sheath sword key is pressed
             {
-                stateMachine.ChangeState(character.sheathSword); // change to sheath sword state.
+                if(stateMachine.CurrentState != character.swingSword)// and not in swing sword state
+                    stateMachine.ChangeState(character.sheathSword); // change to sheath sword state.
             }
         }
     }

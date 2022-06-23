@@ -37,9 +37,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         {
             base.LogicUpdate();
 
-            if (drawSwordKey)
+            if (drawSwordKey) // if draw sword key is pressed
             {
-                stateMachine.ChangeState(character.drawSword); // change to draw sword state.
+                if(stateMachine.CurrentState != character.punch)// and not in punching state
+                    stateMachine.ChangeState(character.drawSword); // change to draw sword state.
             }
         }
     }
