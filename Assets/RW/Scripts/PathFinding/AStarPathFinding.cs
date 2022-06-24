@@ -58,6 +58,13 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             SetDestination(destination); // we'll set the destination we want to go
             StepLeastF(); // then we'll find neighbouring grids and step into the least F
             Move(); // then, we'll move to the destinations node that we have created.
+            
+            
+            // because it's a moving player/object, we need to constantly update the destinations and search the grid.
+            // for the path.
+            
+            // for the movement, we only need to move 1 forward (from the starting point),
+            // doing this will eventually get us to the destination as we constantly search for it.
         }
 
         private void SetDestination(Vector3 destination) // set a new destination for the A* to know 
@@ -338,7 +345,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             
             
-            while (currentGrid.index != destinationGrid.index)
+            while (currentGrid.index != destinationGrid.index) // loop until we step into the destination grid
             {
                 if (!destinationGrid.Walkable)
                 {
@@ -388,10 +395,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             
             
             
-            if(currentGrid.index == destinationGrid.index)
+            if(currentGrid.index == destinationGrid.index) // if we stepped into the destination grid
             {
 
-                FindGridPath();
+                FindGridPath(); // we can start to find the path to it.
 
             }
             
@@ -453,7 +460,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             // move on to. that's why count > 1 because we need a size of 2 inside.
             {
                 nextGridDestination = destinationGrids[1];
-                nextGridCount = 1;
+                nextGridCount = 1; // we jump to 1 because 0 is the starting point (where we are currently on)
+                // so we want to go 1 grid forward.
+                
+                // for the movement, we only need to move 1 forward (from the starting point),
+                // doing this will eventually get us to the destination as we constantly search for it.
+                
+                // as we search again later, we'll start from this point that we moved to,
+                // and the next point will be the point we want to move to.
             }
  
 
@@ -539,8 +553,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
 
 
-                    if (Vector3.Distance(transform.position, 
-                            toPos) < 1f) // if the distance is 0.5f away from the next path grid, 
+                /*if (Vector3.Distance(transform.position, 
+                        toPos) < 1f) // if the distance is 0.5f away from the next path grid, 
                 {
 
                     // either move to the next path
@@ -549,6 +563,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                         nextGridCount++; // we count up
                   
                    
+                        Debug.Log(nextGridCount + " GRID COUNT");
          
 
                         nextGridDestination = destinationGrids[nextGridCount]; // and we get the next one.
@@ -561,7 +576,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                     
              
 
-                }
+                }*/
 
 
 

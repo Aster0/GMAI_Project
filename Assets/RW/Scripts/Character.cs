@@ -346,7 +346,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public bool HurtEnemy(float time, bool hit, State state) // method to hurt an enemy
         {
 
-            Debug.Log(hit);
+           
             if (time <= 0.5f && !hit)
             {
                 Collider[] colliders = Physics.OverlapSphere(transform.position, 3); // hit radius of 3
