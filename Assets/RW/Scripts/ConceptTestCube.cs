@@ -22,10 +22,8 @@ public class ConceptTestCube : MonoBehaviour
 
     private void Update()
     {
-        aStarManager.aStarManager.SetDestination(character.transform.position);
-        aStarManager.aStarManager.StepLeastF();
-        
-        aStarManager.aStarManager.Move();
+        aStarManager.aStarManager.BuildPath(character.transform.position);
+       
     }
 }
 

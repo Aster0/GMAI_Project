@@ -35,12 +35,30 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
 
 
- 
+            bool isPlayerDead = false;
+            Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, enemy.seekRadius);
 
-
-            if (enemy.Stamina < 20) // if stamina is low
+            foreach (Collider collider in colliders)
             {
-           
+                if (collider.name.Equals("Character"))
+                {
+                    Character character = collider.GetComponent<Character>();
+                    if (character.movementSM.CurrentState == character.die) // if player isn't dead
+                    {
+                  
+                        isPlayerDead = true; // if we found the player dead,
+                        break; // we break straight away so we proceed down.
+                    }
+
+            
+
+                }
+            }
+
+
+            if (isPlayerDead || enemy.Stamina <= 20)// if player is dead OR stamina below 20, we go back to stand state.
+            {
+                
                 
                 stateMachine.ChangeState(enemy.standState); // switch back to idle state.
             }

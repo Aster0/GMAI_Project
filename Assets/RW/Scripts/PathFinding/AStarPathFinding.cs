@@ -49,17 +49,30 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             GeneratePositions();
             
         }
-        
 
-        public void SetDestination(Vector3 destination) // set a new destination for the A* to know 
+
+        // this method should be the method u use to move using A*.
+        // put this in Update().
+        public void BuildPath(Vector3 destination)
+        {
+            SetDestination(destination); // we'll set the destination we want to go
+            StepLeastF(); // then we'll find neighbouring grids and step into the least F
+            Move(); // then, we'll move to the destinations node that we have created.
+        }
+
+        private void SetDestination(Vector3 destination) // set a new destination for the A* to know 
         {
          
             //animator.SetFloat("Forward", 0); // turn off the animation for walking
 
 
 
-            foreach (Grid grid in GridManager.Instance.grids)
+            foreach (Grid grid in GridManager.Instance.grids) // iterate all the grids
             {
+                
+                // to save cost on checking on every grid as we calculate the g, h, f cost later,
+                // we can just check the grids and check which is walkable so
+                // we have one less calculation later.
                 grid.CheckWalkable();
                 
                 
@@ -100,7 +113,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
 
 
-        
+            nextGridCount = 0;
 
             startingGrid = GetNearestGridToPosition(this.transform.position); // getting the startingGrid using the current position
             destinationGrid = GetNearestGridToPosition(pos); // getting the destination using the vector3 from the method parameter 
@@ -206,8 +219,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             
                         
                 
-                    //grid.CheckWalkable(); // check if grid is walkable (if there's no obstacles there)
-                    
+      
                 
                     
                     if (grid.Walkable) // if grid is walkable
@@ -311,7 +323,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         
   
         
-        public void StepLeastF() // step into the lowest F value grid
+        private void StepLeastF() // step into the lowest F value grid
         {
 
   
@@ -433,7 +445,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             destinationGrids.Reverse(); // since we saved from the end grid to the start grid..
 
 
-            if (destinationGrids.Count > 1)
+            if (destinationGrids.Count > 1) // the index 0 is the starting point, we want the next which is where we should
+            // move on to. that's why count > 1 because we need a size of 2 inside.
             {
                 nextGridDestination = destinationGrids[1];
                 nextGridCount = 1;
@@ -473,7 +486,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
 
 
-        public void Move()
+        private void Move()
         {
                      
         
@@ -502,10 +515,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 // y is 0 because the grid is slightly elevated so we need to make it back to 0
                 // to this position
                 
-                //transform.position = Vector3.MoveTowards(
-                   // transform.position, toPos, Time.deltaTime * 5);
+                transform.position = Vector3.MoveTowards(
+                    transform.position, toPos, Time.deltaTime * 5);
 
-                   rb.velocity = (toPos - transform.position).normalized * 4;
+                   //rb.velocity = (toPos - transform.position).normalized * 4;
                    // we use velocity instead of transform.position because we don't need to constantly update
                    // the new location to move slowly with Time.deltaTime.
                    // with velocity, we can just push the velocity towards a certain direction and do it
@@ -525,25 +538,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                         nextGridCount++; // we count up
                   
                    
+         
 
                         nextGridDestination = destinationGrids[nextGridCount]; // and we get the next one.
 
   
                    
                     }
-                    else // or stop because its the destination grid.
-                    {
-                        moving = false; // moved finish.
-         
-                    
-                        rb.velocity = new Vector3(0,0);
-
-         
-                        
-                 
-                        return; // dont go down.
-                    }
-          
+           
                     
                     
              

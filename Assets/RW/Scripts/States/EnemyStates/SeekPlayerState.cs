@@ -7,7 +7,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
     {
 
         private float time;
-        private Coroutine seekCoroutine;
+  
         private bool justThrown; // to see if the player was just thrown by the enemy.
         
 
@@ -24,27 +24,25 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             
             //enemy.aStarPathFinding.SetDestination(new Vector3(2.67f, 0, 1.91f));
       
-            seekCoroutine = enemy.StartCoroutine(enemy.aStarPathFinding.StartPathFind(enemy.characterObject));
+          
            
             
             time = 1;
         }
 
 
-        public override void Exit()
-        {
-            base.Exit();
-            
-            enemy.StopCoroutine(seekCoroutine); // stop because we're exiting out of seek.
-      
-            
-         
-        }
+
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-       
+
+            if (Vector3.Distance(enemy.characterObject.transform.position, enemy.transform.position) > 2) // if its more than 2 radius away, we go to the player.
+            {
+                enemy.aStarPathFinding.aStarManager.BuildPath(enemy.characterObject.transform.position);
+            }
+        
+                
             enemy.Stamina -= Time.deltaTime; // lose stamina while seeking
 
             if (time < 0)
