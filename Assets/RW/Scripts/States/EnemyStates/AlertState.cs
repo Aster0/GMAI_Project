@@ -36,7 +36,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
 
             bool foundPlayer = false;
-            Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, 5);
+            Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, 10);
 
             foreach (Collider collider in colliders)
             {

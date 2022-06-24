@@ -38,7 +38,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         [SerializeField]
         private int speed = 3;
 
-        public bool done { get; set; }
+        public bool slowDown { get; set; }
 
 
         public AStarPathFinding()
@@ -431,10 +431,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             if(!isSearching) // if its not currently alreadey searching
                 StepLeastF();
             
+ 
             if (destinationGrids.Count > 0) // have destinations to follow
             {
                 
      
+           
 
                 Vector3 toPos = 
                     
@@ -467,6 +469,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                   
 
                         nextGridDestination = destinationGrids[nextGridCount];
+
+
+  
                    
                     }
                     else
@@ -475,11 +480,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                         Debug.Log("Finish moving");
                     
                         rb.velocity = new Vector3(0,0);
-                        animator.SetFloat("Forward", 0); // off the animation for walking
-                        done = true;
+                        
+                 
                         return;
                     }
           
+                    
                     
              
 
@@ -493,10 +499,21 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 LookTowardsGrid();
 
             }
+
+            if (destinationGrid != null)
+            {
+                if (Vector3.Distance(transform.position, destinationGrid.transform.position) < 4)
+                {
+                    animator.SetFloat("Forward", 0, 0.125f, Time.deltaTime); 
+                    // slow down using animation blend because the next grid is the destination.
+                }
+            }
+   
         }
 
         private void LookTowardsGrid()
         {
+       
             Vector3 toPos = 
                     
                 new Vector3(nextGridDestination.transform.TransformPoint(new Vector3(0, 0)).x, 
@@ -515,7 +532,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
 
 
+
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 5);
+            
+
         }
 
 

@@ -32,7 +32,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
 
 
-            Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, 7);
+            Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, 10);
 
             foreach (Collider collider in colliders)
             {

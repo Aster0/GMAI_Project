@@ -7,6 +7,7 @@ TagManager:
   - Shootable
   - Obstacles
   - Enemy
+  - Creature
   layers:
   - Default
   - TransparentFX

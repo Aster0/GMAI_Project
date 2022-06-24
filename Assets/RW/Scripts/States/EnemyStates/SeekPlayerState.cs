@@ -45,7 +45,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
             if (time < 0)
             {
-                Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, 3);
+                Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, 2);
 
                 foreach (Collider collider in colliders)
                 {
