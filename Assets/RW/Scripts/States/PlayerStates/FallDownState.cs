@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace RayWenderlich.Unity.StatePatternInUnity
 {
-    public class GetThrownState : State // can't move during get thrown. so inherit just state.
+    public class FallDownState : State // can't move during get thrown. so inherit just state.
     {
         private int thrownParam = Animator.StringToHash("Fall");
 
         private float time; 
         // constructor receive and to fill in the base class' constructor values.
-        public GetThrownState(Character character, StateMachine stateMachine) : base(character, stateMachine)
+        public FallDownState(Character character, StateMachine stateMachine) : base(character, stateMachine)
         {
         }
 
@@ -58,7 +58,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity
                 // then we swap back to previous state.
                 
                 character.SetAnimationBool(thrownParam, false);
-                stateMachine.ChangeState(stateMachine.PreviousState);
+                
+                
+                if(!character.GetCurrentAnimation().Equals("FallDown"))
+                    stateMachine.ChangeState(stateMachine.PreviousState);
             }
 
             time -= Time.deltaTime;

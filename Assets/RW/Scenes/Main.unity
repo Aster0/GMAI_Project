@@ -1286,7 +1286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &355025219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1473,12 +1473,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea8b46899a4456ea279f1ae49605d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 3
+  health: 0
   aStarPathFinding: {fileID: 0}
   characterObject: {fileID: 0}
   animator: {fileID: 0}
   rightShoulder: {fileID: 1847476894}
   rb: {fileID: 0}
+  seekRadius: 10
 --- !u!114 &389763298
 MonoBehaviour:
   m_ObjectHideFlags: 0

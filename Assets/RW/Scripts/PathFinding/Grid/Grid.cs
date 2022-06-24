@@ -52,6 +52,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 transform.position, 
                 GridCollider.size, Quaternion.identity);
 
+            
+
 
             foreach (Collider collider in hitColliders)
             {

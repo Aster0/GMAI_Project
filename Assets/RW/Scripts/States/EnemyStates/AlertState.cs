@@ -35,29 +35,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
 
 
-            bool foundPlayer = false;
-            Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, 10);
+ 
 
-            foreach (Collider collider in colliders)
+
+            if (enemy.Stamina < 20) // if stamina is low
             {
-                if (collider.name.Equals("Character"))
-                {
-                    Character character = collider.GetComponent<Character>();
-                    if (character.movementSM.CurrentState != character.die) // if player isn't dead
-                    {
-                        foundPlayer = true; // if we found the player,
-                        return; // we return and do not proceed below.
-                    }
-
-            
-
-                }
-            }
-
-
-            if (!foundPlayer)
-            {
-                // can't find the player anymore..
+           
                 
                 stateMachine.ChangeState(enemy.standState); // switch back to idle state.
             }

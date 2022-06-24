@@ -48,7 +48,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public SwingSwordState swingSword;
         public ShealthSwordState sheathSword;
         public HurtState hurt;
-        public GetThrownState getThrown;
+        public FallDownState falldown;
         public DieState die;
 
         
@@ -168,6 +168,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             anim.SetBool(param, value);
         }
 
+        public string GetCurrentAnimation() // method added by me, to get the correct animation the player is in.
+        {
+            return anim.GetCurrentAnimatorStateInfo(0).ToString();
+        }
+
         public void TriggerAnimation(int param)
         {
             anim.SetTrigger(param);
@@ -260,7 +265,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
             sheathSword = new ShealthSwordState(this, movementSM);
             hurt = new HurtState(this, movementSM);
-            getThrown = new GetThrownState(this, movementSM);
+            falldown = new FallDownState(this, movementSM);
             die = new DieState(this, movementSM);
 
             Equip(weaponPrefab); // equip
@@ -338,30 +343,49 @@ namespace RayWenderlich.Unity.StatePatternInUnity
            
         }
 
-        public void HurtEnemy() // method to hurt an enemy
+        public bool HurtEnemy(float time, bool hit, State state) // method to hurt an enemy
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 3); // hit radius of 3
 
-
-            foreach (Collider collider in colliders)
+            Debug.Log(hit);
+            if (time <= 0.5f && !hit)
             {
-                // this iteration is so we can scale to hitting
-                // other entities in the future.
-                // of course, we can just call the character object in the enemy instance
-                // but there's no future proof in that.
-                // we can also hit multiple "characters" like this then.
+                Collider[] colliders = Physics.OverlapSphere(transform.position, 3); // hit radius of 3
 
 
-                if (collider.CompareTag("Enemy")) // if its an enemy
+                foreach (Collider collider in colliders)
                 {
+                    // this iteration is so we can scale to hitting
+                    // other entities in the future.
+                    // of course, we can just call the character object in the enemy instance
+                    // but there's no future proof in that.
+                    // we can also hit multiple "characters" like this then.
+
+
+                    if (collider.CompareTag("Enemy")) // if its an enemy
+                    {
 
                      
-                    Enemy enemy = collider.GetComponent<Enemy>();
+                        Enemy enemy = collider.GetComponent<Enemy>();
                     
-                    if(enemy.stateMachine.CurrentState != enemy.dieState) // not dead,
-                        enemy.stateMachine.ChangeState(enemy.hurtState); // we hurt!
+                        if(enemy.stateMachine.CurrentState != enemy.dieState) // not dead,
+                            enemy.stateMachine.ChangeState(enemy.hurtState); // we hurt!
+                    }
                 }
+                
+                Debug.Log("Hit");
+                hit = true; // hit = true cause we just hit.
+
             }
+            else if (time < 0)
+            {
+                // when cooldown is over, we swap back to the unarmed idle state.
+                // where we are ready to punch again
+                
+                
+                movementSM.ChangeState(state);
+            }
+
+            return hit;
 
         }
 

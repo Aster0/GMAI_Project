@@ -7,7 +7,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
     {
 
         private float time;
-        
+      
         public IdleState(Enemy enemy, StateMachine stateMachine) : base(enemy, stateMachine)
         {
         }
@@ -24,7 +24,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
         public override void LogicUpdate()
         {
-     
+
+            enemy.Stamina += Time.deltaTime * 2; // recharge stamina
 
             // we check if player is nearby within a set radius.
             // if it is, we interrupt the whole idlestand (the enemy might be sitting or standing)
@@ -32,14 +33,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
 
 
-            Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, 10);
+            Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, enemy.seekRadius);
 
             foreach (Collider collider in colliders)
             {
                 if (collider.name.Equals("Character"))
                 {
                     Character character = collider.GetComponent<Character>();
-                    if (character.movementSM.CurrentState != character.die) // if player isn't dead
+                    if (character.movementSM.CurrentState != character.die && enemy.Stamina >= 100) // if player isn't dead
                     {
                         stateMachine.ChangeState(enemy.seekPlayerState); // , we seek
                         break;

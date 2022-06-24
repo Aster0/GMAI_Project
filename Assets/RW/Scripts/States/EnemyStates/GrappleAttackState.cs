@@ -71,7 +71,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                         Character character = collider.GetComponent<Character>();
                      
                         
-                        character.movementSM.ChangeState(character.getThrown);
+                        character.movementSM.ChangeState(character.falldown);
                  
                     }
                 }

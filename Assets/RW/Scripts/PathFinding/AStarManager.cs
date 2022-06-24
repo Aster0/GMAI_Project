@@ -16,7 +16,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         private GameObject character;
 
-        private AStarPathFinding aStarManager;
+        public AStarPathFinding aStarManager;
 
         private Coroutine movementCoroutine;
         private Rigidbody rb;
@@ -32,13 +32,21 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         private void Start()
         {
-         
+
+
+    
             
-            
-            if(movementCoroutine != null)
-                StopCoroutine(movementCoroutine);
+            //if(movementCoroutine != null)
+              //  StopCoroutine(movementCoroutine);
                 
-            movementCoroutine = StartCoroutine(MovementCoroutine());
+            //movementCoroutine = StartCoroutine(MovementCoroutine());
+            
+                                        
+            aStarManager = new AStarPathFinding();
+
+            aStarManager.animator = animator;
+            aStarManager.transform = this.transform;
+            aStarManager.rb = rb;
         }
 
 
@@ -67,7 +75,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 
                 
             
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.2f);
 
                 
        

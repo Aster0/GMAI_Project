@@ -8,6 +8,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         private int leftPunch = Animator.StringToHash("LeftPunch");
 
 
+        private bool hit;
         private float time;
         
         // constructor receive and to fill in the base class' constructor values.
@@ -27,7 +28,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             // parameter allows multiple indexes.
             // this allows for a more dynamic coding for in the future when we have more animations.
 
-            
+
+            hit = false; // not yet hit.
             time = 1; // set cooldown as 1
 
 
@@ -39,15 +41,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         {
             base.LogicUpdate();
 
-
-            if (time < 0)
-            {
-                // when cooldown is over, we swap back to the unarmed idle state.
-                // where we are ready to punch again
-                
-                character.HurtEnemy();
-                stateMachine.ChangeState(character.unarmedIdle);
-            }
+            hit = character.HurtEnemy(time, hit, character.unarmedIdle);
 
             time -= Time.deltaTime;
 

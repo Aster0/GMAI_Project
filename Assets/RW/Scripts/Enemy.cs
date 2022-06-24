@@ -9,8 +9,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public StateMachine stateMachine ;
 
         // we can assign the start health in the inspector.
-        public float Health; 
+        public float health; 
 
+        public float Stamina { get; set; }
         public SeekPlayerState seekPlayerState;
         public StandState standState;
         public SitState sitState;
@@ -27,8 +28,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
         public GameObject rightShoulder;
         public Rigidbody rb;
+
+        public float seekRadius = 10;
         private void Start()
         {
+            Stamina = 100; // start at 100.
             rb = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
             characterObject = GameObject.Find("Character");
@@ -56,7 +60,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             
             // any state
 
-            if (Health <= 0 && stateMachine.CurrentState != dieState) // less than equal 0 (meaning player should change to die state)
+            if (health <= 0 && stateMachine.CurrentState != dieState) // less than equal 0 (meaning player should change to die state)
                 // and player isn't already dead.
             {
                 stateMachine.ChangeState(dieState);

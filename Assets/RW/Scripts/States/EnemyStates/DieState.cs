@@ -29,10 +29,15 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             // this is why this state can trigger from any states.
             enemy.animator.SetTrigger(dieParam);
 
-       
+            enemy.GetComponent<CapsuleCollider>().height = 0;// so it'll lay flat on the ground.
+
+            enemy.rb.velocity = new Vector3(0, 10, 0);
+            Debug.Log(enemy.rb.velocity.y);
+
+
 
         }
 
-   
+  
     }
 }

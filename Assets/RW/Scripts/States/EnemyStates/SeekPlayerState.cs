@@ -25,6 +25,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             //enemy.aStarPathFinding.SetDestination(new Vector3(2.67f, 0, 1.91f));
       
             seekCoroutine = enemy.StartCoroutine(enemy.aStarPathFinding.StartPathFind(enemy.characterObject));
+           
             
             time = 1;
         }
@@ -35,13 +36,16 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             base.Exit();
             
             enemy.StopCoroutine(seekCoroutine); // stop because we're exiting out of seek.
+      
+            
+         
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
        
-
+            enemy.Stamina -= Time.deltaTime; // lose stamina while seeking
 
             if (time < 0)
             {
@@ -53,7 +57,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                     {
                         Character character = collider.GetComponent<Character>();
 
-                        if (character.movementSM.CurrentState != character.getThrown) // if its not currently in the get thrown state
+                        if (character.movementSM.CurrentState != character.falldown) // if its not currently in the get thrown state
                         // because we don't want to hit while the player is down, we want a short cool down.
                         {
                             enemy.animator.SetFloat("Forward", 0); // stop walk animation

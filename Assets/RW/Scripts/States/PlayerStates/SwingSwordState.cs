@@ -7,6 +7,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         private int swingSword1 = Animator.StringToHash("SwingMelee");
         private int swingSword2 = Animator.StringToHash("SwingMelee2");
 
+        private bool hit;
 
         private float time;
         
@@ -23,7 +24,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
            
 
-
+            hit = false; // not yet hit.
             
             time = 0.5f; // set cooldown as 0.5 - swing sword is faster as we want a sword to have faster attack speed.
             // incentive of equipping a sword.
@@ -43,15 +44,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             base.LogicUpdate();
 
 
-            if (time < 0)
-            {
-                // when cooldown is over, we swap back to the unarmed idle state.
-                // where we are ready to punch again
-                
-                character.HurtEnemy();
-                
-                stateMachine.ChangeState(character.armedIdle);
-            }
+            hit = character.HurtEnemy(time, hit, character.armedIdle);
 
             time -= Time.deltaTime;
 

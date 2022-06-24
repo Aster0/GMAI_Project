@@ -6,14 +6,27 @@ using UnityEngine;
 
 public class ConceptTestCube : MonoBehaviour
 {
-  
+
+    private AStarManager aStarManager;
+
+    private GameObject character;
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(GetComponent<AStarManager>().StartPathFind(GameObject.Find("Character")));
+        aStarManager = GetComponent<AStarManager>();
+        //StartCoroutine(GetComponent<AStarManager>().StartPathFind(GameObject.Find("Character")));
+
+        character = GameObject.Find("Character");
+
     }
 
-
+    private void Update()
+    {
+        aStarManager.aStarManager.SetDestination(character.transform.position);
+        aStarManager.aStarManager.StepLeastF();
+        
+        aStarManager.aStarManager.Move();
+    }
 }
 
 
