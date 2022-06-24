@@ -341,7 +341,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             while (currentGrid.index != destinationGrid.index)
             {
                 if (!destinationGrid.Walkable)
+                {
+                    
                     return;
+                }
+                  
                 
                 // FINDING THE SMALLEST F OF THE NEAREST GRID WE JUST CHECKED AND CALCULATED.
 
@@ -523,13 +527,20 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                    // the new location to move slowly with Time.deltaTime.
                    // with velocity, we can just push the velocity towards a certain direction and do it
                    // only once.
-            
-                animator.SetFloat("Forward", 1); // turn on the animation for walking
-                
-        
 
-                if (Vector3.Distance(transform.position, 
-                        toPos) < 1f) // if the distance is 0.5f away from the next path grid, 
+                int walkValue = 0;
+
+                if (destinationGrid.Walkable) // if its walkable, 
+                    walkValue = 1; // then we want to animate walk so walkValue 1. 
+                
+                // else not walkable, the value is still 0, so the animation stops.
+                
+                animator.SetFloat("Forward", walkValue); // turn on the animation for walking
+
+
+
+                    if (Vector3.Distance(transform.position, 
+                            toPos) < 1f) // if the distance is 0.5f away from the next path grid, 
                 {
 
                     // either move to the next path
@@ -587,15 +598,20 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             // the direction to rotate towards
             Vector3 targetDirection =  toPos
                                        - transform.position;
+
+            if (targetDirection != Vector3.zero)
+            {
+                Quaternion rotation =
+                    Quaternion.LookRotation(targetDirection);
+                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 5);
+            }
             
-            
-            Quaternion rotation =
-                Quaternion.LookRotation(targetDirection);
 
 
 
 
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 5);
+
+    
             
 
         }
