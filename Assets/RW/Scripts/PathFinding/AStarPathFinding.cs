@@ -223,10 +223,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
                 if (grid != null) // if grid is found, sometimes to the left or right or etc might be out of the map so no grid there.
                 {
-            
-                        
-                
-      
+
+
+
+
+       
                 
                     
                     if (grid.Walkable) // if grid is walkable

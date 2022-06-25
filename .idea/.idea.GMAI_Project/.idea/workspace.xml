@@ -14,7 +14,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/823fb226a3f9439cb41fdcb61f9c86a1157600/be/d40c5e74/Component.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/823fb226a3f9439cb41fdcb61f9c86a1157600/cd/15b90a8e/Quaternion.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a642ad78cd754c97a615f0d9a616a6031a000/99/5fbfbcde/Physics.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/RW/Scripts/Coin/CoinTrigger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/RW/Scripts/ConceptTestCube.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/RW/Scripts/CreatureInfo.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -84,6 +86,7 @@
       <workItem from="1656073896470" duration="3721000" />
       <workItem from="1656082998347" duration="18836000" />
       <workItem from="1656103816583" duration="418000" />
+      <workItem from="1656142118638" duration="3629000" />
     </task>
     <servers />
   </component>
