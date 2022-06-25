@@ -1,3 +1,4 @@
+using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 using RayWenderlich.Unity.StatePatternInUnity.PathFinding;
 using UnityEngine;
@@ -5,11 +6,13 @@ using UnityEngine;
 namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
 {
     [TaskCategory("Creature")]
-    [TaskDescription("Seeks the owner")]
-    public class SeekOwner : Action
+    [TaskDescription("Goes back to old resting spot.")]
+    public class GoBackOldSpot : Action
     {
         private AStarManager aStarManager;
         private CreatureInfo creatureInfo;
+
+        public SharedVector3 restingSpot;
 
 
 
@@ -22,22 +25,28 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
             aStarManager = GetComponent<AStarManager>();
             creatureInfo = GetComponent<CreatureInfo>();
 
-    
+            creatureInfo.isTamed = false; // idling means tamed is not true.
 
         }
 
         public override TaskStatus OnUpdate()
         {
 
-            if (creatureInfo.owner != null) // null check
+            if (Vector3.Distance(transform.position, restingSpot.Value) > 2)
             {
-                if(Vector3.Distance(transform.position, creatureInfo.owner.transform.position) > 4) // if above 4 radius then keep following.
-                    aStarManager.aStarManager.BuildPath(creatureInfo.owner.transform.position); // then we follow the owner.
-            }
+                aStarManager.aStarManager.BuildPath(restingSpot.Value);
               
             
-            return TaskStatus.Running;
-            // just return running 
+                return TaskStatus.Running;
+                // just return running 
+            }
+            else 
+            {
+                
+                Debug.Log("Success");
+                return TaskStatus.Success; // if 
+            }
+        
         }
 
 

@@ -29,6 +29,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             // this is why this state can trigger from any states.
             enemy.animator.SetTrigger(hurtParam);
 
+            
             enemy.health--; // minus one health as its hurt.
 
             time = 1.5f; // "stunned" (hurted) for 1.5 seconds so the player

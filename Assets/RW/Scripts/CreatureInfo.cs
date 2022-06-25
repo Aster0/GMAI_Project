@@ -10,6 +10,8 @@ public class CreatureInfo : MonoBehaviour // to store various information about 
 
     public GameObject owner;
 
+    public float shieldCooldown;
+
 }
 
 // custom shared value so we can share this CreatureInfo class in the behavior designer tree.

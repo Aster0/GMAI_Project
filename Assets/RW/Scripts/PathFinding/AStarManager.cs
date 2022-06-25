@@ -28,32 +28,19 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             character = GameObject.Find("Character");
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
+            
+
+            
+    
         }
 
         private void Start()
         {
-
-
-    
-            
-            //if(movementCoroutine != null)
-              //  StopCoroutine(movementCoroutine);
-                
-            //movementCoroutine = StartCoroutine(MovementCoroutine());
-            
-                                        
             aStarManager = new AStarPathFinding();
 
             aStarManager.animator = animator;
             aStarManager.transform = this.transform;
             aStarManager.rb = rb;
         }
-
-
-        
-        
- 
-
-
     }
 }

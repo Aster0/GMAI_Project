@@ -5,8 +5,8 @@ using UnityEngine;
 namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
 {
     [TaskCategory("Creature")]
-    [TaskDescription("Returns success if the creature is near a coin.")]
-    public class IsCoinNearBy : Conditional
+    [TaskDescription("Returns success if an enemy is close to the owner")]
+    public class IsEnemyNearBy : Conditional
     {
         
 
@@ -25,9 +25,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
 
         public override TaskStatus OnUpdate()
         {
-            bool coinNearby = false;
+            bool enemyNearby = false;
             
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 5); // collection radius of 5
+            Collider[] colliders = Physics.OverlapSphere(creatureInfo.owner.transform.position, 5); // detect enemy in radius of 5
+            // around the owner, not the creature.
 
 
             foreach (Collider collider in colliders)
@@ -35,18 +36,16 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
            
 
 
-                if (collider.CompareTag("Coin"))
+                if (collider.CompareTag("Enemy"))
                 {
 
+                    enemyNearby = true;
 
-                    coinNearby = true; // coin is nearby.
-                    coinObject.Value = collider.gameObject;
-                    break; // break out of iteration as we do not need to iterate anymore.
                 }
             }
 
             
-            return coinNearby ? TaskStatus.Success : TaskStatus.Failure;
+            return enemyNearby ? TaskStatus.Success : TaskStatus.Failure;
             // if coinNearby == true, we'll return a success. else a failure.
 
         }

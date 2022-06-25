@@ -545,8 +545,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
                 int walkValue = 0;
 
-                if (destinationGrid.Walkable) // if its walkable, 
-                    walkValue = 1; // then we want to animate walk so walkValue 1. 
+                if(destinationGrid != null) // there's a destination grid..
+                    if (destinationGrid.Walkable) // if its walkable, 
+                        walkValue = 1; // then we want to animate walk so walkValue 1. 
                 
                 // else not walkable, the value is still 0, so the animation stops.
                 

@@ -27,8 +27,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
             aStarManager = GetComponent<AStarManager>();
             creatureInfo = GetComponent<CreatureInfo>();
             animator = GetComponent<Animator>();
-            
-            animator.SetBool("Run", true); // run animation on
+
 
         }
 
@@ -60,11 +59,6 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
         }
 
 
-        public override void OnEnd()
-        {
-            base.OnEnd();
-            
-            animator.SetBool("Run", false); // run animation off when this node returns a failure.
-        }
+  
     }
 }

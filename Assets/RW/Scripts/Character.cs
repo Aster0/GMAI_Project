@@ -29,6 +29,7 @@
  */
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RayWenderlich.Unity.StatePatternInUnity
 {
@@ -70,6 +71,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         private Animator anim;
         [SerializeField]
         private ParticleSystem shockWave;
+
+        [SerializeField] private Text playerHealthText;
+
+        [SerializeField] private GameObject shield;
 #pragma warning restore 0649
         [SerializeField]
         private float meleeRestThreshold = 10f;
@@ -241,6 +246,22 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             currentWeapon.transform.localPosition = Vector3.zero;
             currentWeapon.transform.localRotation = Quaternion.identity;
         }
+
+        public void ToggleShield(bool toggle)
+        {
+            shield.SetActive(toggle);
+        }
+
+        public bool GetShieldStatus()
+        {
+            return shield.activeSelf;
+        }
+
+        public void SetPlayerHealth(int value)
+        {
+            playerHealthText.text = "PLAYER HEALTH: " + value;
+        }
+        
         #endregion
 
         #region MonoBehaviour Callbacks
@@ -248,6 +269,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         private void Start()
         {
             Health = data.startHealth; // initialize start health of player.
+            SetPlayerHealth(Health); // set the UI for player health.
           
             movementSM = new StateMachine();
 

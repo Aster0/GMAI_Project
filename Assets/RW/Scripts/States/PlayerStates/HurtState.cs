@@ -29,7 +29,15 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
             time = 1; // give it a second cooldown
 
-            character.Health--; // minus player health by 1.
+
+            if (!character.GetShieldStatus()) // if player doesn't have a shield,
+                // (shield is provided by the companion creature NPC)
+            {
+                character.Health--; // minus player health by 1.
+                character.SetPlayerHealth(character.Health); // update the UI for player health.
+            }
+         
+              
         }
         
         
