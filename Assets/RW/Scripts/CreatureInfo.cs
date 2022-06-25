@@ -12,12 +12,12 @@ public class CreatureInfo : MonoBehaviour // to store various information about 
 
     public float shieldCooldown;
 
+    public void TameCreature(GameObject owner) // to tame the creature.
+    {
+        this.owner = owner;
+        isTamed = true;
+    }
+
 }
 
-// custom shared value so we can share this CreatureInfo class in the behavior designer tree.
-[System.Serializable]
-public class SharedCreatureInfo : SharedVariable<CreatureInfo>
-{
-    public override string ToString() { return mValue == null ? "null" : mValue.ToString(); }
-    public static implicit operator SharedCreatureInfo(CreatureInfo value) { return new SharedCreatureInfo { mValue = value }; }
-}
+

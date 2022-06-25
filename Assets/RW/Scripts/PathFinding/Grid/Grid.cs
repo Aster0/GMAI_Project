@@ -33,7 +33,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         public float CalculateH(Vector3 destination)
         {
-            // Euclidean - we want diagonal movement!
+            // Euclidean Calculation - we want the movement to be more fluid! not just going in a straight line
+            // like manhatttan.
 
             Vector3 pos = transform.position;
 
