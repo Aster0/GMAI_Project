@@ -15,7 +15,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         private List<GridPosition> positionsToCheck = new List<GridPosition>();
         public Grid startingGrid, currentGrid, destinationGrid;
         public LayerMask layerMask;
-        private bool isSearching;
+        private bool isSearching, unreachableDestination, destinationChanged;
 
         public Transform transform; // parent transform
 
@@ -55,9 +55,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         // put this in Update().
         public void BuildPath(Vector3 destination)
         {
-            SetDestination(destination); // we'll set the destination we want to go
-            StepLeastF(); // then we'll find neighbouring grids and step into the least F
-            Move(); // then, we'll move to the destinations node that we have created.
+            GetStartAndEndGrid(destination); // we'll set the destination we want to go
+
+            if (!unreachableDestination && destinationGrid != null) // we only want to step and move if its reachable.
+            {
+                StepLeastF(); // then we'll find neighbouring grids and step into the least F
+                Move(); // then, we'll move to the destinations node that we have created.
+            }
+
             
             
             // because it's a moving player/object, we need to constantly update the destinations and search the grid.
@@ -67,26 +72,6 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             // doing this will eventually get us to the destination as we constantly search for it.
         }
 
-        private void SetDestination(Vector3 destination) // set a new destination for the A* to know 
-        {
-         
-            //animator.SetFloat("Forward", 0); // turn off the animation for walking
-
-
-
-            foreach (Grid grid in GridManager.Instance.grids) // iterate all the grids
-            {
-                
-                // to save cost on checking on every grid as we calculate the g, h, f cost later,
-                // we can just check the grids and check which is walkable so
-                // we have one less calculation later.
-                grid.CheckWalkable();
-                
-                
-            }
-            
-            GetStartAndEndGrid(destination);
-        }
 
 
         public Collider FindNearestGridToPosition(Vector3 pos) // find the nearest grid t o the inputted position in parameters
@@ -115,7 +100,56 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             return nearestCollider;
         }
 
-        public void GetStartAndEndGrid(Vector3 pos)
+        private void CheckIfUnreachable()
+        {
+            int unwalkableNeighbours = 0;
+            int totalNeighboursGrids = 0;
+            unreachableDestination = false;
+            
+            foreach (GridPosition gridPosition in
+                     positionsToCheck)
+            {
+
+
+                // this is to check all the neighboring grids to ensure the destination isn't sandwiched in the middle
+                // of a bunch of unreachable place. we don't even want to try walking there
+                // as our current grid will never reach there to calculate because well.. it's sandwiched
+                // between a bunch of unwalkables which will never be explored in the opened list.
+                
+                // this is so we can efficiently update the map as well, to get a good idea on where is walkable and not.
+                
+                
+
+                Grid grid = GridManager.Instance.FindAtPositionGrid(destinationGrid.transform.position + gridPosition.pos);
+                // find the grid at said neighbouring position
+
+                if (grid != null) // not null because it has to be an actual grid there. neighbouring could mean out of the map which doesn't have a grid so it returns a null.
+                {
+                    grid.CheckWalkable(); // check if these grids are indeed walkable.
+                    
+                    if (!grid.Walkable) // if it's not, 
+                    {
+                        unwalkableNeighbours++; // we add on to the unwalkable neighbour total amount
+                    }
+
+                    totalNeighboursGrids++; // regardless, we count the number of actual neighbour grids there are
+                }
+                
+                // later, if this goes through, we again check if the grids are walkable whenever we step into the least
+                // f grid and check its neighbours.
+                
+                // this method is just a safety measure because if a grid is sandwiched in the middle of unwalkable grids,
+                // it could never be stepped into and check if its unwalkable.
+                
+            }
+
+            if (unwalkableNeighbours == totalNeighboursGrids) // if the actual neighbour grids and unwalkable neighbour are the same
+            {
+                unreachableDestination = true; // maens its sandwiched in the middle of a bunch of unwalkable grids.
+            }
+        }
+
+        private void GetStartAndEndGrid(Vector3 pos)
         {
 
 
@@ -130,6 +164,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             currentGrid = startingGrid; // the current grid is the starting grid, because... yeah.. we're starting here..
 
+            
+            CheckIfUnreachable();
+            
+            
             openGrids.Clear(); // reset grids
             closedGrids.Clear(); // reset grids
             
@@ -206,7 +244,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         {
 
 
-
+            destinationChanged = false;
 
 
             foreach (GridPosition gridPosition in positionsToCheck) // check all the grids around the current grid position.
@@ -228,7 +266,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
 
        
-                
+                    grid.CheckWalkable(); // check if that grid is walkable.
                     
                     if (grid.Walkable) // if grid is walkable
                     {
@@ -297,6 +335,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                         if (grid.index == destinationGrid.index) // and is a destination grid
                         {
 
+                         
 
                       
                             // we just grab the closest grid which is this previous grid as the destination.
@@ -307,10 +346,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                             // the current grid is the previous grid before opening the new adjacent grids.
 
 
-                     
-
+                            destinationChanged = true;
                             
-                            Debug.Log("Found new destination" + currentGrid.index + " " + destinationGrid.index);
+                          
 
                             break;
 
@@ -348,12 +386,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             
             while (currentGrid.index != destinationGrid.index) // loop until we step into the destination grid
             {
-                if (!destinationGrid.Walkable)
+                /*if (!destinationGrid.Walkable)
                 {
                     
                     return;
-                }
-                  
+                }*/
+
                 
                 // FINDING THE SMALLEST F OF THE NEAREST GRID WE JUST CHECKED AND CALCULATED.
 
@@ -480,9 +518,6 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             {
                 destinationGrids.Remove(destinationGrids[0]);
             }
-
-
-
             try
             {
                 nextGridDestination = destinationGrids[0];
@@ -515,7 +550,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 GetStartAndEndGrid(setDestination);
             }*/
             
-            StepLeastF();
+            //StepLeastF();
   
       
             
@@ -543,42 +578,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                    // with velocity, we can just push the velocity towards a certain direction and do it
                    // only once.
 
-                int walkValue = 0;
-
-                if(destinationGrid != null) // there's a destination grid..
-                    if (destinationGrid.Walkable) // if its walkable, 
-                        walkValue = 1; // then we want to animate walk so walkValue 1. 
+       
                 
-                // else not walkable, the value is still 0, so the animation stops.
                 
-                animator.SetFloat("Forward", walkValue); // turn on the animation for walking
-
-
-
-                /*if (Vector3.Distance(transform.position, 
-                        toPos) < 1f) // if the distance is 0.5f away from the next path grid, 
-                {
-
-                    // either move to the next path
-                    if (nextGridCount + 1 != destinationGrids.Count) // if we still can count up in the destination grid
-                    {
-                        nextGridCount++; // we count up
-                  
-                   
-                        Debug.Log(nextGridCount + " GRID COUNT");
-         
-
-                        nextGridDestination = destinationGrids[nextGridCount]; // and we get the next one.
-
-  
-                   
-                    }
-           
-                    
-                    
-             
-
-                }*/
+                
 
 
 
@@ -592,11 +595,20 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             if (destinationGrid != null) // there must be a destination.
             {
-                if (Vector3.Distance(transform.position, destinationGrid.transform.position) < 6) // if its this distance away from the destination, we start to slow down.
+
+                //Debug.Log(destinationGrid.index + " " + Vector3.Distance(transform.position, destinationGrid.transform.position));
+                if (Vector3.Distance(transform.position, destinationGrid.transform.position) < 3) // if its this distance away from the destination, we start to slow down.
                 {
                     animator.SetFloat("Forward", 0, 0.125f, Time.deltaTime); 
                     // slowly slow down using animation blend because the next grid is the destination.
+                    //Debug.Log("STOP");
                 }
+                else
+                {
+                    animator.SetFloat("Forward", 1); // turn on the animation for walking
+                }
+
+
             }
    
         }

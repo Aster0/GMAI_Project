@@ -67,6 +67,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                         Walkable = false;
                         break;
                     }
+                    else
+                    {
+                        Walkable = true;
+                    }
                 }
                
             }
