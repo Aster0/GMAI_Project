@@ -32,13 +32,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             
 
 
-            if (character.TamedCreatureCollider != null)
-            {
-                CreatureInfo creatureInfo = character.TamedCreatureCollider.GetComponent<CreatureInfo>();
 
-                creatureInfo.isTamed = true;
-                creatureInfo.owner = character.gameObject;
-            }
             
           
 
@@ -55,6 +49,15 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
             if (time < 0)
             {
+                if (character.TamedCreatureCollider != null) // null check just to make sure.
+                {
+                    CreatureInfo creatureInfo = character.TamedCreatureCollider.GetComponent<CreatureInfo>();
+                    // get the creature's info instance so we can tame that specific creature.
+                    
+                    creatureInfo.TameCreature(character.gameObject); // tame the creature
+                 
+                }
+                
                 stateMachine.ChangeState(stateMachine.PreviousState); // change back to previous state.
             }
 
