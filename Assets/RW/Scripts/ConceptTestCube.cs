@@ -22,9 +22,7 @@ public class ConceptTestCube : MonoBehaviour
 
     private void Update()
     {
-  
         aStarManager.aStarManager.BuildPath(character.transform.position);
-        
        
     }
 }

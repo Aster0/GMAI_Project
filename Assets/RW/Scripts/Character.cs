@@ -271,6 +271,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
         private void Start()
         {
+
+        
             Health = data.startHealth; // initialize start health of player.
             SetPlayerHealth(Health); // set the UI for player health.
           
