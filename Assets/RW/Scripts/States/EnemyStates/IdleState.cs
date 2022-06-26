@@ -25,7 +25,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
         public override void LogicUpdate()
         {
 
-            enemy.Stamina += Time.deltaTime * 2; // recharge stamina
+            enemy.stamina += Time.deltaTime * 2; // recharge stamina
 
             // we check if player is nearby within a set radius.
             // if it is, we interrupt the whole idlestand (the enemy might be sitting or standing)
@@ -40,7 +40,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                 if (collider.name.Equals("Character"))
                 {
                     Character character = collider.GetComponent<Character>();
-                    if (character.movementSM.CurrentState != character.die && enemy.Stamina >= 100) // if player isn't dead
+                    if (character.movementSM.CurrentState != character.die && enemy.stamina >= 100) // if player isn't dead
                     {
                         stateMachine.ChangeState(enemy.seekPlayerState); // , we seek
                         break;

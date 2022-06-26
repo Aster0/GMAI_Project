@@ -41,7 +41,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
          public override void LogicUpdate()
         {
             base.LogicUpdate();
-
+            enemy.stamina -= Time.deltaTime; // lose stamina while seeking
+            
 
             if (time < 1 && !hit) // under 1 second left, to sync up the animation timing. and if it's not already hit.
             {

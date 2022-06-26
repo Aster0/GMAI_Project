@@ -141,8 +141,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
                 SoundManager.Instance.PlaySound(SoundManager.Instance.landing);
                 
                 character.Jumped = false; // landed, so we reset to false.
-                Debug.Log("Landed");
-     
+
             }
 
 

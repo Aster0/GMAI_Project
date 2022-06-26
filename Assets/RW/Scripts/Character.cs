@@ -38,10 +38,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity
     {
         #region Variables
 
+        // i followed these variable naming from the tutorial fsm, 
+        // normally i would name like swingSwordState, falldownState, etc, but i just followed what the tutorial named
+        // for this project to keep the naming conventions alike.
+        
         public StateMachine movementSM ;
-        public StandingState standing;
-        public DuckingState ducking; 
-        public JumpingState jumping;
         public DrawSwordState drawSword;
         public UnarmedIdleState unarmedIdle;
         public ArmedIdleState armedIdle;
@@ -276,13 +277,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             Health = data.startHealth; // initialize start health of player.
             SetPlayerHealth(Health); // set the UI for player health.
           
+            
+            // init states
             movementSM = new StateMachine();
-
-            standing = new StandingState (this , movementSM);
-
-            ducking = new DuckingState(this, movementSM);
-
-            jumping = new JumpingState(this, movementSM);
+            
             drawSword = new DrawSwordState(this, movementSM);
             unarmedIdle = new UnarmedIdleState(this, movementSM);
             punch = new PunchState(this, movementSM);
@@ -296,8 +294,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             die = new DieState(this, movementSM);
             tameNPC = new TameNPCState(this, movementSM);
 
-            Equip(weaponPrefab); // equip
+            Equip(weaponPrefab); // equip weapon to instantiate the weapon game object first.
             SheathWeapon(); // then sheath the weapon behind the back
+            
             movementSM.Initialize(unarmedIdle);
         }
         
@@ -417,24 +416,19 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
         }
 
-        public void CheckPlayerJumpAndCrouch(bool jump, bool crouch, StateMachine stateMachine, State previousState)
+
+        public void HurtPlayer()
         {
-           
             
-            if (crouch)
+            if (!GetShieldStatus()) // if player doesn't have a shield,
+                // (shield is provided by the companion creature NPC)
             {
-                stateMachine.ChangeState(ducking);
+                Health--; // minus player health by 1.
+                SetPlayerHealth(Health); // update the UI for player health.
             }
-            else if (jump)
-            {
-                stateMachine.ChangeState(jumping);
-                
-                
-            }
-            
-            // since jumping and crouching can be from multiple states, we need to save the previousState.
-            stateMachine.PreviousState = previousState;
         }
+
+
 
         #endregion
     }

@@ -27,7 +27,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             base.Exit();
             
             enemy.animator.SetBool("Sit", false); // get up 
-            Debug.Log("Get up");
+       
         }
 
         

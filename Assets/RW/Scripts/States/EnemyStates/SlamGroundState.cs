@@ -8,7 +8,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
         private float time;
         private GameObject player;
-        private bool grappled; 
+
         
 
         private Vector3 previousWanderDestination;
@@ -21,15 +21,15 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
         {
             base.Enter();
          
-            DisplayOnUI(UIManager.Alignment.Right);
+            DisplayOnUI(UIManager.Alignment.Right); // display the state on the right side for enemy.
             
-            enemy.animator.SetTrigger("Slam");
+            enemy.animator.SetTrigger("Slam"); // trigger animation slam.
 
             player = enemy.characterObject;
 
-            time = 1.5f;
+            time = 1.5f; // set time to start from 1.5 seconds. to count down later.
 
-            grappled = false;
+
             
 
 
@@ -43,13 +43,13 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
         {
             base.LogicUpdate();
 
-
+            enemy.stamina -= Time.deltaTime; // lose stamina while seeking
 
 
 
             //player.transform.position = enemy.rightShoulder.transform.position +(enemy.rightShoulder.transform.forward);
 
-            if (time <= 0.5f)
+            if (time <= 0.5f) // if time is under 0.5 seconds alreaedy
             {
                 enemy.GetComponent<CapsuleCollider>().center = new Vector3(0, 1.4f, 0);
                 // so the animation will be on the ground as it needs to kneel
@@ -58,7 +58,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             }
 
 
-            if (time < 0)
+            if (time < 0) // if time is up
             {
                 Collider[] colliders = Physics.OverlapSphere(enemy.transform.position, 5); // hit radius of 3
 

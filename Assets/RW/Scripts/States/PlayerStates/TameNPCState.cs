@@ -27,16 +27,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
 
             character.TriggerAnimation(tame);
-
-
             
 
-
-
-            
-          
-
-            time = 3; // 2 seconds to tame
+            time = 3; // 3 seconds to tame
 
 
 

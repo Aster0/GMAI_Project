@@ -59,7 +59,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             foreach (Collider collider in hitColliders)
             {
 
-                if (collider != null)
+                if (collider != null) // safety measure cos sometimes if u launch the project and click play too fast,
+                // somehow it says the colliders are null..
                 {
                     if (collider.tag.Equals("Obstacles"))
                     {

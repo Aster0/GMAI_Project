@@ -6,7 +6,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
     {
         private int dieParam = Animator.StringToHash("Die");
 
-        private float time; 
+
         // constructor receive and to fill in the base class' constructor values.
         public DieState(Character character, StateMachine stateMachine) : base(character, stateMachine)
         {
@@ -28,7 +28,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             // this is why this state can trigger from any states.
             character.TriggerAnimation(dieParam);
 
-            time = 3; // give it a  3 seconds cooldown
+
             
             character.GetComponent<CapsuleCollider>().height = character.FallColliderHeight; // this is so, when
             // the fall animation plays, the collider is small enough that it doesn't levitate the player

@@ -8,7 +8,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
         private float time;
   
-        private bool justThrown; // to see if the player was just thrown by the enemy.
+        private bool justSmashed; // to see if the player was just thrown by the enemy.
         
 
         private Vector3 previousWanderDestination;
@@ -22,7 +22,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             base.Enter();
             DisplayOnUI(UIManager.Alignment.Right);
             
-            //enemy.aStarPathFinding.SetDestination(new Vector3(2.67f, 0, 1.91f));
+
       
           
            
@@ -43,7 +43,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             }
         
                 
-            enemy.Stamina -= Time.deltaTime; // lose stamina while seeking
+            enemy.stamina -= Time.deltaTime; // lose stamina while seeking
 
             if (time < 0)
             {
@@ -55,7 +55,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                     {
                         Character character = collider.GetComponent<Character>();
 
-                        if (character.movementSM.CurrentState != character.falldown) // if its not currently in the get thrown state
+                        if (character.movementSM.CurrentState != character.falldown) // if its not currently in the fall down state
                         // because we don't want to hit while the player is down, we want a short cool down.
                         {
                             enemy.animator.SetFloat("Forward", 0); // stop walk animation
@@ -67,7 +67,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                             {
                                 // melee attack
                                 stateMachine.ChangeState(enemy.meleeAttackState);
-                                justThrown = false; // we can safely say that just thrown is false
+                                justSmashed = false; // we can safely say that just thrown is false
                                 // because we're entering a melee attack instead of the grappling attack.
                                 // so no throwing here.
                                 // this makes it so it doesn't grapple twice,
@@ -75,7 +75,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                             }
                             else // last 20% chance
                             {
-                                if(!justThrown) // if not just thrown
+                                if(!justSmashed) // if not just thrown
                                 // grapple
                                     stateMachine.ChangeState(enemy.slamGroundState);
                             }
@@ -88,7 +88,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                         }
                         else
                         {
-                            justThrown = true; // as the player now is being
+                            justSmashed = true; // as the player now is being
                             // thrown, we can say just thrown is true.
                         }
                             

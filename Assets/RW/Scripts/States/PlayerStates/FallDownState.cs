@@ -39,13 +39,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             // we don't want to use the character.ColliderSize because it changes the center too.
             // we just want to change the height, that's all.
 
-            if (!character.GetShieldStatus()) // if player doesn't have a shield,
-                // (shield is provided by the companion creature NPC)
-            {
-                character.Health--; // minus player health by 1.
-                character.SetPlayerHealth(character.Health); // update the UI for player health.
-            }
-
+            character.HurtPlayer();
         }
 
         public override void Exit()

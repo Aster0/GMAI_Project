@@ -15,7 +15,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         private List<GridPosition> positionsToCheck = new List<GridPosition>();
         public Grid startingGrid, currentGrid, destinationGrid;
         public LayerMask layerMask;
-        private bool isSearching, unreachableDestination, destinationChanged;
+        private bool unreachableDestination;
 
         public Transform transform; // parent transform
 
@@ -25,7 +25,6 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         private Coroutine movementCoroutine;
         
-        private bool moving = false, destinationBlocked;
         public Rigidbody rb;
         
 
@@ -33,11 +32,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         
         private Grid nextGridDestination;
-        private int nextGridCount;
+
         private List<Grid> destinationGrids = new List<Grid>();
 
-        [SerializeField]
-        private int speed = 3;
+
 
         public bool slowDown { get; set; }
 
@@ -155,7 +153,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
 
 
-            nextGridCount = 0;
+  
 
             startingGrid = GetNearestGridToPosition(this.transform.position); // getting the startingGrid using the current position
             destinationGrid = GetNearestGridToPosition(pos); // getting the destination using the vector3 from the method parameter 
@@ -179,9 +177,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             
             closedGrids.Add(startingGrid); // we close the starting grid because we just explored it.
             
-            isSearching = false;
-            moving = false; // reset variables
-            destinationBlocked = false;
+
+        
+      
 
 
 
@@ -250,7 +248,6 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         {
 
 
-            destinationChanged = false;
 
 
             foreach (GridPosition gridPosition in positionsToCheck) // check all the grids around the current grid position.
@@ -352,7 +349,6 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                             // the current grid is the previous grid before opening the new adjacent grids.
 
 
-                            destinationChanged = true;
                             
                           
 
@@ -365,7 +361,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 }
             }
 
-            isSearching = false;
+           
 
 
 
@@ -382,7 +378,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             if (destinationGrid == null || currentGrid == null) // make sure that destination grid is set.
                 return;
                 
-            isSearching = true;
+     
 
             
   
@@ -499,13 +495,15 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
     
  
             destinationGrids.Reverse(); // since we saved from the end grid to the start grid..
+            // we need to reverse so it starts from the start node to the end grid.
+            // so now we have a viable path to the end grid.
 
 
             if (destinationGrids.Count > 1) // the index 0 is the starting point, we want the next which is where we should
             // move on to. that's why count > 1 because we need a size of 2 inside.
             {
                 nextGridDestination = destinationGrids[1];
-                nextGridCount = 1; // we jump to 1 because 0 is the starting point (where we are currently on)
+                // we jump to 1 because 0 is the starting point (where we are currently on)
                 // so we want to go 1 grid forward.
                 
                 // for the movement, we only need to move 1 forward (from the starting point),
@@ -517,23 +515,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
  
 
 
-            // we need to reverse so it starts from the start node to the end grid.
-            // so now we have a viable path to the end grid.
 
-            /*if (Vector3.Distance(destinationGrids[0].transform.position, transform.position) > 2)
-            {
-                destinationGrids.Remove(destinationGrids[0]);
-            }
-            try
-            {
-                nextGridDestination = destinationGrids[0];
-                nextGridCount = 1;
-            }
-            catch (ArgumentException e) 
-                // catching the error if we can't get the first dest because we are using coroutines.
-            {
-               
-            }*/
+
+     
     
             
             

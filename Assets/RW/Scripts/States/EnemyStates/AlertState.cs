@@ -56,7 +56,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             }
 
 
-            if (isPlayerDead || enemy.Stamina <= 20)// if player is dead OR stamina below 20, we go back to stand state.
+            if (isPlayerDead || enemy.stamina <= 20)// if player is dead OR stamina below 20, we go back to stand state.
             {
                 
                 

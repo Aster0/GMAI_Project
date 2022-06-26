@@ -10,9 +10,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public StateMachine stateMachine ;
 
         // we can assign the start health in the inspector.
-        public int health; 
+        public int health;
 
-        public float Stamina { get; set; }
+
+        public float stamina;
         public SeekPlayerState seekPlayerState;
         public StandState standState;
         public SitState sitState;
@@ -40,12 +41,16 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         
         private void Start()
         {
-            Stamina = 100; // start at 100.
+            stamina = 100; // start at 100.
             rb = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
             characterObject = GameObject.Find("Character");
             aStarPathFinding = GetComponent<AStarManager>();
+            
+            
+            // init states
             stateMachine = new StateMachine();
+            
 
             meleeAttackState = new MeleeAttackState(this, stateMachine);
             slamGroundState = new SlamGroundState(this, stateMachine);
