@@ -58,13 +58,17 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             foreach (Collider collider in hitColliders)
             {
-              
-                if (collider.tag.Equals("Obstacles"))
+
+                if (collider != null)
                 {
-                    //Debug.Log(collider.name + " " + index);
-                    Walkable = false;
-                    break;
+                    if (collider.tag.Equals("Obstacles"))
+                    {
+                        //Debug.Log(collider.name + " " + index);
+                        Walkable = false;
+                        break;
+                    }
                 }
+               
             }
         }
 
