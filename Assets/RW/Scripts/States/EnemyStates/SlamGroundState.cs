@@ -53,6 +53,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             {
                 enemy.GetComponent<CapsuleCollider>().center = new Vector3(0, 1.4f, 0);
                 // so the animation will be on the ground as it needs to kneel
+                
+                enemy.slamFloor.SetActive(true); // slam floor visual on
             }
 
 
@@ -79,15 +81,20 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                      
                         
                         character.movementSM.ChangeState(character.falldown);
+                        
+                        
                  
                     }
                 }
+                
+                enemy.slamFloor.SetActive(false); // slam floor visual off
                 
                 // many ways of transiting back. we can also check the current animation clip
                 // by doing animator.GetCurrentAnimatorClipInfo(0).
                 // or check the animation timing and set based off it.
                 
                 stateMachine.ChangeState(enemy.seekPlayerState);
+                
                 
                 
             }

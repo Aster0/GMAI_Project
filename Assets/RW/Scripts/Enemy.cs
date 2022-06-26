@@ -34,6 +34,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
         [SerializeField]
         private Text enemyHealthText;
+
+
+        public GameObject slamFloor;
+        
         private void Start()
         {
             Stamina = 100; // start at 100.
