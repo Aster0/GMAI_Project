@@ -77,7 +77,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                             {
                                 if(!justThrown) // if not just thrown
                                 // grapple
-                                    stateMachine.ChangeState(enemy.grappleAttackState);
+                                    stateMachine.ChangeState(enemy.slamGroundState);
                             }
 
 

@@ -32,6 +32,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             
             enemy.health--; // minus one health as its hurt.
 
+            enemy.SetEnemyHealth(enemy.health); // set the UI
+
             time = 1.5f; // "stunned" (hurted) for 1.5 seconds so the player
             // can retaliate back better
 

@@ -1,6 +1,7 @@
 using RayWenderlich.Unity.StatePatternInUnity.EnemyStates;
 using RayWenderlich.Unity.StatePatternInUnity.PathFinding;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RayWenderlich.Unity.StatePatternInUnity
 {
@@ -9,14 +10,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public StateMachine stateMachine ;
 
         // we can assign the start health in the inspector.
-        public float health; 
+        public int health; 
 
         public float Stamina { get; set; }
         public SeekPlayerState seekPlayerState;
         public StandState standState;
         public SitState sitState;
         public MeleeAttackState meleeAttackState;
-        public GrappleAttackState grappleAttackState;
+        public SlamGroundState slamGroundState;
         public EnemyStates.HurtState hurtState;
         public EnemyStates.DieState dieState;
 
@@ -30,6 +31,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public Rigidbody rb;
 
         public float seekRadius = 10;
+
+        [SerializeField]
+        private Text enemyHealthText;
         private void Start()
         {
             Stamina = 100; // start at 100.
@@ -40,7 +44,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             stateMachine = new StateMachine();
 
             meleeAttackState = new MeleeAttackState(this, stateMachine);
-            grappleAttackState = new GrappleAttackState(this, stateMachine);
+            slamGroundState = new SlamGroundState(this, stateMachine);
 
             seekPlayerState = new SeekPlayerState(this, stateMachine);
             sitState = new SitState(this, stateMachine);
@@ -51,6 +55,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             // namespace from the player's hurt state class.
             
             stateMachine.Initialize(standState);
+            
+            SetEnemyHealth(health); // set the UI
         }
         private void Update()
         {
@@ -70,6 +76,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         private void FixedUpdate()
         {
             stateMachine.CurrentState.PhysicsUpdate ();
+        }
+        
+        public void SetEnemyHealth(int value)
+        {
+            enemyHealthText.text = "ENEMY HEALTH: " + value;
         }
 
     }

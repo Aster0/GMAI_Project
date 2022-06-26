@@ -6,6 +6,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
     {
         private int thrownParam = Animator.StringToHash("Fall");
 
+        private CapsuleCollider capsuleCollider;
         private float time; 
         // constructor receive and to fill in the base class' constructor values.
         public FallDownState(Character character, StateMachine stateMachine) : base(character, stateMachine)
@@ -29,8 +30,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             character.SetAnimationBool(thrownParam, true);
 
             time = 3; // give it a  3 seconds cooldown
-            
-            character.GetComponent<CapsuleCollider>().height = character.FallColliderHeight; // this is so, when
+
+            capsuleCollider = character.GetComponent<CapsuleCollider>();
+            capsuleCollider.height = character.FallColliderHeight; // this is so, when
             // the fall animation plays, the collider is small enough that it doesn't levitate the player
             // when its lying down.
             // this makes it so the player lays on the ground and not floating above it.
@@ -58,15 +60,35 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             base.LogicUpdate();
 
 
-            if (time < 0) // when cool down is over
+            
+
+            
+
+            if (time < 0.3f) // when cool down is over (altered for the animation timing)
             {
                 // then we swap back to previous state.
-                
-                character.SetAnimationBool(thrownParam, false);
-                
-                
-                if(!character.GetCurrentAnimation().Equals("FallDown"))
+
+
+
+
+                if (!character.GetCurrentAnimation().Equals("FallDown")) // if its not the fall down animation anymore
+                {
+                    
+              
                     stateMachine.ChangeState(stateMachine.PreviousState);
+                }
+                   
+            }
+            else if (time < 0.7f)
+            {
+                capsuleCollider.height = character.NormalColliderHeight;
+                // swap back to normal collider height.
+            }
+            else if (time < 1f)
+            {
+                character.SetAnimationBool(thrownParam, false); // set the animation off early.
+                
+              
             }
 
             time -= Time.deltaTime;

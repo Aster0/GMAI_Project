@@ -335,7 +335,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         {
 
   
-            if (destinationGrid == null) // make sure that destination grid is set.
+            if (destinationGrid == null || currentGrid == null) // make sure that destination grid is set.
                 return;
                 
             isSearching = true;
