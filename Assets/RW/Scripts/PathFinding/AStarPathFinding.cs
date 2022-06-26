@@ -105,6 +105,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             int unwalkableNeighbours = 0;
             int totalNeighboursGrids = 0;
             unreachableDestination = false;
+ 
             
             foreach (GridPosition gridPosition in
                      positionsToCheck)
@@ -117,7 +118,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 // between a bunch of unwalkables which will never be explored in the opened list.
                 
                 // this is so we can efficiently update the map as well, to get a good idea on where is walkable and not.
-                
+
                 
 
                 Grid grid = GridManager.Instance.FindAtPositionGrid(destinationGrid.transform.position + gridPosition.pos);
@@ -158,7 +159,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             startingGrid = GetNearestGridToPosition(this.transform.position); // getting the startingGrid using the current position
             destinationGrid = GetNearestGridToPosition(pos); // getting the destination using the vector3 from the method parameter 
-          
+
+
+            if (destinationGrid == null) // make sure there's a destination.
+            {
+                return;
+            }
 
             currentDestination = pos; 
 
