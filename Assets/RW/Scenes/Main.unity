@@ -1480,6 +1480,7 @@ MonoBehaviour:
   rightShoulder: {fileID: 1847476894}
   rb: {fileID: 0}
   seekRadius: 10
+  enemyHealthText: {fileID: 1321015736}
 --- !u!114 &389763298
 MonoBehaviour:
   m_ObjectHideFlags: 0

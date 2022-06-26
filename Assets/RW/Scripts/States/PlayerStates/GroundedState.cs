@@ -44,7 +44,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
 
         private bool belowCeiling;
-        private bool crouchHeld, jumpHeld;
+        private bool crouchHeld, jumpHeld, tamePress;
         
         private bool grounded;
         private int jumpParam = Animator.StringToHash("Jump");
@@ -77,7 +77,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             
             crouchHeld = Input.GetButton("Fire3"); // we use t his so we can sense if the player is holding shift.
             jumpHeld = character.CheckJumpInput();
-            
+
+            tamePress = Input.GetButton("Cancel");
+
         }
 
         public override void LogicUpdate()
@@ -141,6 +143,47 @@ namespace RayWenderlich.Unity.StatePatternInUnity
                 character.Jumped = false; // landed, so we reset to false.
                 Debug.Log("Landed");
      
+            }
+
+
+            if (tamePress)
+            {
+                float nearestDistance = Mathf.Infinity;
+                Collider nearestCollider = null;
+            
+                Collider[] colliders = Physics.OverlapSphere(character.transform.position, 3); // tame radius of 3
+
+
+                foreach (Collider collider in colliders)
+                {
+                    // this iteration is so we can scale to hitting
+                    // other entities in the future.
+                    // of course, we can just call the character object in the enemy instance
+                    // but there's no future proof in that.
+                    // we can also hit multiple "characters" like this then.
+
+
+                    if (collider.CompareTag("Creature"))
+                    {
+
+                        float distance = Vector3.Distance(character.transform.position, collider.transform.position);
+                        if (distance < nearestDistance)
+                            // meaning this new one is the nearest between the player and the creature
+                        {
+                            nearestDistance = distance;
+                            nearestCollider = collider;
+                            // update the nearest colliders
+                        }
+                    }
+                }
+            
+                // now, we only tame the closest. so we don't tame all the creatures in the vicinity if there are more than 1.
+
+                character.TamedCreatureCollider = nearestCollider; // save a reference to it, so
+                // we can use it in the tamed state.
+                
+                if(nearestCollider != null)
+                    stateMachine.ChangeState(character.tameNPC);
             }
             
             

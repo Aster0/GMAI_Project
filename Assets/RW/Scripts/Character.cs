@@ -51,6 +51,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public HurtState hurt;
         public FallDownState falldown;
         public DieState die;
+        public TameNPCState tameNPC;
 
         
 
@@ -98,6 +99,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
         public int Health { get; set; } // player's health.
         public bool Jumped { get; set; } // if player has jumped
+        
+        public Collider TamedCreatureCollider { get; set; }
         public float NormalColliderHeight => data.normalColliderHeight;
         public float CrouchColliderHeight => data.crouchColliderHeight;
         public float FallColliderHeight => data.fallColliderHeight;
@@ -289,6 +292,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             hurt = new HurtState(this, movementSM);
             falldown = new FallDownState(this, movementSM);
             die = new DieState(this, movementSM);
+            tameNPC = new TameNPCState(this, movementSM);
 
             Equip(weaponPrefab); // equip
             SheathWeapon(); // then sheath the weapon behind the back
