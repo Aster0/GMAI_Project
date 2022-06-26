@@ -1461,6 +1461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
+  stamina: 0
   aStarPathFinding: {fileID: 0}
   characterObject: {fileID: 0}
   animator: {fileID: 0}

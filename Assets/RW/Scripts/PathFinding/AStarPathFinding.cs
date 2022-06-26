@@ -7,7 +7,7 @@ using UnityEngine;
 namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 {
     
-    public class AStarPathFinding 
+    public class AStarPathFinding
     {
         public List<Grid> openGrids = new List<Grid>();
         public List<Grid> closedGrids = new List<Grid>();
@@ -545,7 +545,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
       
             
  
-            if (destinationGrids.Count > 0) // have destinations to follow
+            if (destinationGrids.Count > 0 && nextGridDestination != null) // have destinations to follow
             {
                 
      
