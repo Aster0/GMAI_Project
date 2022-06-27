@@ -58,8 +58,24 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         {
             base .Enter();
             horizontalInput = verticalInput = 0.0f;
+
+            BelowCeilingCheck(); // this code has been altered after the video documentation recording to ensure
+            // no flow errors.
+            // this is to quickly check on enter if its below a ceiling.
+            // as if u're below a ceiling and if u punch, a different instance of the grounded state is transitioned
+            // into and might not quickly catch that the player is still below a ceiling.
             
-  
+            if (belowCeiling)
+            {
+                speed = character.CrouchSpeed ;
+                rotationSpeed = character.CrouchRotationSpeed;
+            }
+            // then if we are below a ceiling after checking, we want to make sure
+            // we update the speed to be the crouch speed.
+            
+            
+
+
         }
         
         public override void Exit()
@@ -87,10 +103,13 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             base.LogicUpdate();
 
 
+            Debug.Log(speed);
 
       
 
-            if (crouchHeld) // if crouch is pressed,
+            if (crouchHeld && grounded) // if crouch is pressed,
+            // and check if its grounded (this code has been altered after the video documentation recording to ensure
+            // no flow errors.)
             {
                 // ducking logic have been shifted to grounded state 
                 // this is for a more efficient use of my hierarchical state.
@@ -101,7 +120,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity
                 speed = character.CrouchSpeed ;
                 rotationSpeed = character.CrouchRotationSpeed;
                 character.ColliderSize = character.CrouchColliderHeight;
-                belowCeiling = false;
+                
+                
             }
             else if (!(crouchHeld || belowCeiling))
             {
@@ -123,7 +143,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             }
             
             // separate ifs from the crouch because we want the player to be able to jump while crouching.
-            if (jumpHeld && grounded) // also make sure if its grounded then jump.
+            if (jumpHeld && grounded && !belowCeiling) // also make sure if its grounded then jump. 
+            // if its not below ceiling, then we can jump. This code has been modified a bit after
+            // my documentation video.
             {
                 grounded = false;
                 // set the player to not grounded as they just jumped.
@@ -145,7 +167,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             }
 
 
-            if (tamePress)
+            if (tamePress && grounded) // ESC pressed and the player is grounded (not jumping)
+            // note that I added the grounded condition after making the video. however the FSM diagram is updated.
+            // on the documentation.
             {
                 float nearestDistance = Mathf.Infinity;
                 Collider nearestCollider = null;
@@ -198,10 +222,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             
             
             // to check if player is below a ceiling.
-            belowCeiling = character.CheckCollisionOverlap(
-                character.transform.position +
-                Vector3.up * character.NormalColliderHeight);
+            BelowCeilingCheck();
 
+            Debug.Log(belowCeiling);
 
             if (!grounded)
             {
@@ -213,6 +236,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity
                 
             }
             
+        }
+
+        private void BelowCeilingCheck()
+        {
+            // to check if player is below a ceiling.
+            belowCeiling = character.CheckCollisionOverlap(
+                character.transform.position +
+                Vector3.up * character.NormalColliderHeight);
         }
         
         // jumping logic have been shifted to grounded state 
