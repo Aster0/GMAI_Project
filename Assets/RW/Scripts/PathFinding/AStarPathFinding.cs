@@ -55,7 +55,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         {
             GetStartAndEndGrid(destination); // we'll set the destination we want to go
 
-            if (!unreachableDestination && destinationGrid != null) // we only want to step and move if its reachable.
+            if (!unreachableDestination && destinationGrid != null && startingGrid != null) // we only want to step and move if its reachable.
             {
                 StepLeastF(); // then we'll find neighbouring grids and step into the least F
                 Move(); // then, we'll move to the destinations node that we have created.
@@ -176,6 +176,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             {
              
                 unreachableDestination = true; // maens its sandwiched in the middle of a bunch of unwalkable grids.
+                
             }
         }
 
