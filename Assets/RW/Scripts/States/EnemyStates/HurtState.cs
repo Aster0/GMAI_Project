@@ -30,9 +30,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             enemy.animator.SetTrigger(hurtParam);
 
             
-            enemy.health--; // minus one health as its hurt.
-
-            enemy.SetEnemyHealth(enemy.health); // set the UI
+            enemy.Damage();
 
             time = 1.5f; // "stunned" (hurted) for 1.5 seconds so the player
             // can retaliate back better

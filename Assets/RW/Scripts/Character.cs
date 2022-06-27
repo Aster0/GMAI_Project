@@ -28,13 +28,14 @@
  * THE SOFTWARE.
  */
 
+using RayWenderlich.Unity.StatePatternInUnity.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RayWenderlich.Unity.StatePatternInUnity
 {
     [RequireComponent(typeof(CapsuleCollider))]
-    public class Character : MonoBehaviour
+    public class Character : MonoBehaviour, IDamageable // the IDamageable interface makes it so this entity is damageable. it also makes us remember to add the relevant variables and methods like Damage() and Health.
     {
         #region Variables
 
@@ -417,9 +418,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         }
 
 
-        public void HurtPlayer()
+        public void Damage()
         {
-            
+            // override the damage interface
             if (!GetShieldStatus()) // if player doesn't have a shield,
                 // (shield is provided by the companion creature NPC)
             {

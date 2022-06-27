@@ -1460,7 +1460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea8b46899a4456ea279f1ae49605d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
+  startHealth: 3
   stamina: 0
   aStarPathFinding: {fileID: 0}
   characterObject: {fileID: 0}
@@ -3051,8 +3051,8 @@ MonoBehaviour:
         byteData: 
         byteDataArray: 
       Version: 1.6.8
-  gizmoViewMode: 2
-  showBehaviorDesignerGizmo: 1
+  gizmoViewMode: 0
+  showBehaviorDesignerGizmo: 0
 --- !u!114 &882244662
 MonoBehaviour:
   m_ObjectHideFlags: 0

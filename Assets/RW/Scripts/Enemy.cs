@@ -1,16 +1,18 @@
 using RayWenderlich.Unity.StatePatternInUnity.EnemyStates;
+using RayWenderlich.Unity.StatePatternInUnity.Interfaces;
 using RayWenderlich.Unity.StatePatternInUnity.PathFinding;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RayWenderlich.Unity.StatePatternInUnity
 {
-    public class Enemy : MonoBehaviour
+    public class Enemy : MonoBehaviour, IDamageable // the IDamageable interface makes it so this entity is damageable. it also makes us remember to add the relevant variables and methods like Damage() and Health.
     {
         public StateMachine stateMachine ;
 
+        public int startHealth;
         // we can assign the start health in the inspector.
-        public int health;
+        public int Health { get; set; }
 
 
         public float stamina;
@@ -41,7 +43,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         
         private void Start()
         {
+
+            Health = startHealth; // init the enemy's start health.
             stamina = 100; // start at 100.
+            
+            // get instances of relevant components.
             rb = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
             characterObject = GameObject.Find("Character");
@@ -65,7 +71,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             
             stateMachine.Initialize(standState);
             
-            SetEnemyHealth(health); // set the UI
+            SetEnemyHealth(Health); // set the UI
         }
         private void Update()
         {
@@ -75,7 +81,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             
             // any state
 
-            if (health <= 0 && stateMachine.CurrentState != dieState) // less than equal 0 (meaning player should change to die state)
+            if (Health <= 0 && stateMachine.CurrentState != dieState) // less than equal 0 (meaning player should change to die state)
                 // and player isn't already dead.
             {
                 stateMachine.ChangeState(dieState);
@@ -90,6 +96,15 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         public void SetEnemyHealth(int value)
         {
             enemyHealthText.text = "ENEMY HEALTH: " + value;
+        }
+
+
+        public void Damage()
+        {
+             // override the damage interface
+             Health--; // minus one health as its hurt.
+
+             SetEnemyHealth(Health); // set the UI
         }
 
     }

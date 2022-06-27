@@ -30,7 +30,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             time = 1; // give it a second cooldown
 
 
-            character.HurtPlayer();
+            character.Damage();
          
               
         }

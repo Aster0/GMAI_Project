@@ -39,7 +39,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             // we don't want to use the character.ColliderSize because it changes the center too.
             // we just want to change the height, that's all.
 
-            character.HurtPlayer();
+            character.Damage();
         }
 
         public override void Exit()

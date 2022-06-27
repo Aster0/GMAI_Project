@@ -123,7 +123,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             }
             
             // separate ifs from the crouch because we want the player to be able to jump while crouching.
-            if (jumpHeld)
+            if (jumpHeld && grounded) // also make sure if its grounded then jump.
             {
                 grounded = false;
                 // set the player to not grounded as they just jumped.
