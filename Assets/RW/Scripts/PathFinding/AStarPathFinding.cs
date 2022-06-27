@@ -100,8 +100,13 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         private void CheckIfUnreachable()
         {
+            // for destination grid
             int unwalkableNeighbours = 0;
             int totalNeighboursGrids = 0;
+            
+            // for current grid.
+            int unwalkableNeighboursCurrentGrid = 0;
+            int totalNeighboursGridsCurrentGrid = 0;
             unreachableDestination = false;
  
             
@@ -121,6 +126,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
                 Grid grid = GridManager.Instance.FindAtPositionGrid(destinationGrid.transform.position + gridPosition.pos);
                 // find the grid at said neighbouring position
+                
+                Grid gridCurrentPositionNeighbour = GridManager.Instance.FindAtPositionGrid(startingGrid.transform.position + gridPosition.pos);
+                // find the grid at said neighbouring position
+                // we also want to check the starting position if its not surrounded by neighbouring unwalkable grids.
 
                 if (grid != null) // not null because it has to be an actual grid there. neighbouring could mean out of the map which doesn't have a grid so it returns a null.
                 {
@@ -139,11 +148,33 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 
                 // this method is just a safety measure because if a grid is sandwiched in the middle of unwalkable grids,
                 // it could never be stepped into and check if its unwalkable.
+
+                // same logic as above but this time to check the current grid neighbouring grids if its 100% walkable in 
+                // all direction.
+                if (gridCurrentPositionNeighbour != null)
+                {
+                    // this code was added after the video documentation to ensure no flow errors.
+                    // although it's very unlikely that the enemy will be surrounded with unwalkable neighbour grids 
+                    // at its start grid, it's a good habit to prevent these errors so
+                    // the project will not crash.
+                    
+                    gridCurrentPositionNeighbour.CheckWalkable(); // check if these grids are indeed walkable.
+                    
+                    if (!gridCurrentPositionNeighbour.Walkable) // if it's not, 
+                    {
+                        unwalkableNeighboursCurrentGrid++; // we add on to the unwalkable neighbour total amount
+                    }
+
+                    totalNeighboursGridsCurrentGrid++; // regardless, we count the number of actual neighbour grids there are
+                }
                 
             }
 
-            if (unwalkableNeighbours == totalNeighboursGrids) // if the actual neighbour grids and unwalkable neighbour are the same
+            // if either destination or starting grid has all unwalkable neighbours, we deem as unreachable.
+            if ((unwalkableNeighbours == totalNeighboursGrids) ||
+                (unwalkableNeighboursCurrentGrid == totalNeighboursGridsCurrentGrid)) // if the actual neighbour grids and unwalkable neighbour are the same
             {
+             
                 unreachableDestination = true; // maens its sandwiched in the middle of a bunch of unwalkable grids.
             }
         }
@@ -159,7 +190,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             destinationGrid = GetNearestGridToPosition(pos); // getting the destination using the vector3 from the method parameter 
 
 
-            if (destinationGrid == null) // make sure there's a destination.
+            if (destinationGrid == null || startingGrid == null) // make sure there's a destination.
             {
                 return;
             }

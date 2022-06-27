@@ -105,7 +105,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             base.LogicUpdate();
 
 
-            Debug.Log(speed);
+       
 
       
 
@@ -226,7 +226,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             // to check if player is below a ceiling.
             BelowCeilingCheck();
 
-            Debug.Log(belowCeiling);
+            
 
             if (!grounded)
             {

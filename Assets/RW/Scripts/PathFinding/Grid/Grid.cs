@@ -62,7 +62,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 if (collider != null) // safety measure cos sometimes if u launch the project and click play too fast,
                 // somehow it says the colliders are null..
                 {
-                    if (collider.tag.Equals("Obstacles"))
+                    if (collider.tag.Equals("Obstacles")) // you can also add || collider.tag.Equals("Creatures") for creature detection. it should work with no issues as the system is dynamic.
                     {
                         //Debug.Log(collider.name + " " + index);
                         Walkable = false;
