@@ -491,6 +491,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                     {
                         unreachableDestination = true;
                         break;
+                        // safety measure so the while loop isn't infinite and crashes the project.
                     }
                 }
         
