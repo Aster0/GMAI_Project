@@ -13,7 +13,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public List<Grid> closedGrids = new List<Grid>();
 
         private List<GridPosition> positionsToCheck = new List<GridPosition>();
-        public Grid startingGrid, currentGrid, destinationGrid;
+        public Grid startingGrid, currentGrid, destinationGrid, cachedCurrentGrid;
         public LayerMask layerMask;
         private bool unreachableDestination;
 
@@ -60,6 +60,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 StepLeastF(); // then we'll find neighbouring grids and step into the least F
                 Move(); // then, we'll move to the destinations node that we have created.
             }
+      
 
             
             
@@ -409,8 +410,13 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
   
             if (destinationGrid == null || currentGrid == null) // make sure that destination grid is set.
                 return;
-                
-     
+
+
+            cachedCurrentGrid = destinationGrid; // we just cache the destination grid as the current grid
+            // so our clause is not affected below currentGrid.index != cachedCurrentGrid.index
+            // as we know that the currentGrid index will never be the same as cachedCurrentGrid
+            // until the end when we find the destination and currentGrid will then be the same.
+            // this only matters for the first iteration below.
 
             
   
@@ -430,6 +436,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 // FINDING THE SMALLEST F OF THE NEAREST GRID WE JUST CHECKED AND CALCULATED.
 
          
+                
+
+                
          
                 if (openGrids.Count > 0) // if least one open grid is added
                 {
@@ -445,8 +454,10 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
                     
                     currentGrid = lowestGrid; // update the new current grid.
+
         
-               
+ 
+                    
                     closedGrids.Add(lowestGrid); // as we stepped into it, we can close it.
 
                     openGrids.Remove(lowestGrid); // remove from open grid as we have already stepped on it.
@@ -454,7 +465,35 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                     
                 
                 }
-                
+
+
+                if (cachedCurrentGrid != null) // null check
+                {
+                    
+                    if (currentGrid.index != cachedCurrentGrid.index) // if it enters the openGrids.Count > 0 
+                    // clause, the currentGrid will change. If it changed, we know that it'll be different from the cachedCurrentGrid.
+                    // if it's not the same, we'll update the cachedCurrentGrid to take the currentGrid.
+                    // and for the next iteration, it goes into the openGrids.Count > 0 clause again
+                    // and changes the currentGrid instance.
+                    // 
+                    {
+                        
+                        cachedCurrentGrid = currentGrid; // cache the current grid to make sure later there's a change in it.
+                        // we dont want it looping at the same current grid and getting stuck because
+                        // there's no path.
+                    
+                    }
+                    else 
+                    // so if it doesn't go into the openGrids.Count, we know that we have explored all possible
+                    // open grids and have no route to the destination.
+                    // so we can safely say that the previosuly cached current grid will be the same as the current grid 
+                    // as there's no change (because did not go into the openGrids.Count clause.)
+                    {
+                        unreachableDestination = true;
+                        break;
+                    }
+                }
+        
                 
                 SearchPath(destinationGrid.transform.position);
                 
@@ -628,6 +667,13 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 else
                 {
                     animator.SetFloat("Forward", 1); // turn on the animation for walking
+                }
+
+
+
+                if (unreachableDestination) // if while stepping f and realised that the destination is actually unreachable too, maybe surrounded by unwalkable grids
+                {
+                    animator.SetFloat("Forward", 0);  // stop walking.
                 }
 
 
