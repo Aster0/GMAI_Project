@@ -63,7 +63,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                             int chance = Random.Range(0, 100);
 
            
-                            if (chance <= 20) // 80% chance
+                            if (chance <= 80) // 80% chance
                             {
                                 // melee attack
                                 stateMachine.ChangeState(enemy.meleeAttackState);
