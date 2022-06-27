@@ -29,11 +29,14 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
             // this is why this state can trigger from any states.
             enemy.animator.SetTrigger(hurtParam);
 
-            
-            enemy.Damage();
+     
 
             time = 1.5f; // "stunned" (hurted) for 1.5 seconds so the player
             // can retaliate back better
+            
+            enemy.slamFloor.SetActive(false); // just incase, we turn it off the visual because its no longer
+            // going to slam the floor if its hurt.
+            enemy.animator.SetBool("Slam", false); // same thing for slam animation.
 
         }
 

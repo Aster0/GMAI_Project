@@ -100,6 +100,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         #region Properties
 
         public int Health { get; set; } // player's health.
+        public bool Damaged { get; set; } // whether the player damaged the enemy or not.
         public bool Jumped { get; set; } // if player has jumped
         
         public Collider TamedCreatureCollider { get; set; }
@@ -371,49 +372,19 @@ namespace RayWenderlich.Unity.StatePatternInUnity
            
         }
 
-        public bool HurtEnemy(float time, bool hit, State state) // method to hurt an enemy
+        public void FinishHurting(float time, State state) // method to hurt an enemy
         {
 
            
-            if (time <= 0.5f && !hit)
-            {
-                Collider[] colliders = Physics.OverlapSphere(transform.position, 3); // hit radius of 3
-
-
-                foreach (Collider collider in colliders)
-                {
-                    // this iteration is so we can scale to hitting
-                    // other entities in the future.
-                    // of course, we can just call the character object in the enemy instance
-                    // but there's no future proof in that.
-                    // we can also hit multiple "characters" like this then.
-
-
-                    if (collider.CompareTag("Enemy")) // if its an enemy
-                    {
-
-                     
-                        Enemy enemy = collider.GetComponent<Enemy>();
-                    
-                        if(enemy.stateMachine.CurrentState != enemy.dieState) // not dead,
-                            enemy.stateMachine.ChangeState(enemy.hurtState); // we hurt!
-                    }
-                }
-                
-                Debug.Log("Hit");
-                hit = true; // hit = true cause we just hit.
-
-            }
-            else if (time < 0)
+            if (time < 0)
             {
                 // when cooldown is over, we swap back to the unarmed idle state.
                 // where we are ready to punch again
-                
-                
+
+                Damaged = false;
                 movementSM.ChangeState(state);
             }
-
-            return hit;
+            
 
         }
 

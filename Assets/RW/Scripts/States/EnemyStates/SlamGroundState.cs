@@ -23,12 +23,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
          
             DisplayOnUI(UIManager.Alignment.Right); // display the state on the right side for enemy.
             
-            enemy.animator.SetTrigger("Slam"); // trigger animation slam.
+            enemy.animator.SetBool("Slam", true); // turn the animation on
 
             player = enemy.characterObject;
 
             time = 1.5f; // set time to start from 1.5 seconds. to count down later.
-
+            enemy.slamFloor.SetActive(true); // slam floor visual on
 
             
 
@@ -54,7 +54,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                 enemy.GetComponent<CapsuleCollider>().center = new Vector3(0, 1.4f, 0);
                 // so the animation will be on the ground as it needs to kneel
                 
-                enemy.slamFloor.SetActive(true); // slam floor visual on
+              
             }
 
 
@@ -94,6 +94,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
                 // or check the animation timing and set based off it.
                 
                 stateMachine.ChangeState(enemy.seekPlayerState);
+                enemy.animator.SetBool("Slam", false); // turn the animation off.
                 
                 
                 

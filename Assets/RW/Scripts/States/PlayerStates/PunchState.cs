@@ -29,7 +29,6 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             // this allows for a more dynamic coding for in the future when we have more animations.
 
 
-            hit = false; // not yet hit.
             time = 1; // set cooldown as 1
 
 
@@ -41,7 +40,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         {
             base.LogicUpdate();
 
-            hit = character.HurtEnemy(time, hit, character.unarmedIdle);
+            character.FinishHurting(time, character.unarmedIdle);
 
             time -= Time.deltaTime;
 

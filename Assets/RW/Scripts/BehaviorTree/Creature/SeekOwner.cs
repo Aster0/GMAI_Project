@@ -31,7 +31,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
 
             if (creatureInfo.owner != null) // null check
             {
-                if(Vector3.Distance(transform.position, creatureInfo.owner.transform.position) > 4) // if above 4 radius then keep following.
+                if(Vector3.Distance(transform.position, creatureInfo.owner.transform.position) > 5) // if above 5 radius then keep following.
                     aStarManager.aStarManager.BuildPath(creatureInfo.owner.transform.position); // then we follow the owner.
             }
               

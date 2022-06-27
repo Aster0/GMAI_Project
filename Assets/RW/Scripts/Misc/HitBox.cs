@@ -28,14 +28,46 @@
  * THE SOFTWARE.
  */
 
+using System;
 using UnityEngine;
 
 namespace RayWenderlich.Unity.StatePatternInUnity
 {
     public class HitBox : MonoBehaviour
     {
-        public float damage;
+       
 
+        public Character character;
         //Do damage
+
+        private void OnTriggerStay(Collider other)
+        {
+
+           
+            if (other.CompareTag("Enemy")) // if its an enemy
+            {
+
+                if (character.movementSM.CurrentState == character.punch
+                    || character.movementSM.CurrentState ==
+                    character.swingSword) // if character is in punch or swing sword state
+                {
+
+                    if (!character.Damaged)
+                    {
+                        Enemy enemy = other.GetComponent<Enemy>();
+                        // get the enemy component
+                
+                        // so we can access its IDamageable Interface to damage the enemy.
+                        enemy.Damage();
+
+                        character.Damaged = true;
+
+                    }
+               
+                }
+
+   
+            }
+        }
     }
 }

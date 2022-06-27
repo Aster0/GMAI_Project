@@ -44,7 +44,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             base.LogicUpdate();
 
 
-            hit = character.HurtEnemy(time, hit, character.armedIdle);
+            character.FinishHurting(time, character.armedIdle);
 
             time -= Time.deltaTime;
 

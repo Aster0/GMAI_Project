@@ -105,6 +105,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
              Health--; // minus one health as its hurt.
 
              SetEnemyHealth(Health); // set the UI
+             
+             if(stateMachine.CurrentState != dieState) // not dead,
+                 stateMachine.ChangeState(hurtState); // we change state to hurt state!!
         }
 
     }
