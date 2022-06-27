@@ -67,6 +67,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             
             if (belowCeiling)
             {
+                // this code has been altered after the video documentation recording to ensure
+                // no flow errors.
                 speed = character.CrouchSpeed ;
                 rotationSpeed = character.CrouchRotationSpeed;
             }
