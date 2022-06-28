@@ -32,7 +32,7 @@ using UnityEngine;
 
 namespace RayWenderlich.Unity.StatePatternInUnity
 {
-    public class ShealthSwordState : GroundedState // so still can move while sword is drawn
+    public class ShealthSwordState : GroundedState // so still can move, jump, crouch while sword is drawn
     {
 
  
@@ -48,12 +48,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             // make sure we set the movement speed incase it was resetted before this state
             
        
-            character.SetAnimationBool(character.sheathSwordParam, true);
-            character.SetAnimationBool(character.drawSwordParam, false); // set draw sword to false.
+            character.SetAnimationBool(character.sheathSwordParam, true); // turn on sheath animation.
+            character.SetAnimationBool(character.drawSwordParam, false); // set draw sword to false. 
 
-            character.SheathWeapon(); // draw current weapon
+            character.SheathWeapon(); // sheath current weapon
             
-            Debug.Log("SHEATHHH");
+        
             
             stateMachine.ChangeState(character.unarmedIdle); // change to unarmed idle
             // as we have just sheathed our sword.

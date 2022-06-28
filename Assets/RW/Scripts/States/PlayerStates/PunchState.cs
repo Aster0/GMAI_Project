@@ -41,8 +41,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             base.LogicUpdate();
 
             character.FinishHurting(time, character.unarmedIdle);
+            // handles what happens when the enemy is finished hurting ^
+            // Hit is handled in HitBox.cs - this is because the default project provided that script
+            // so to try to work with the project, I have used that script.
 
-            time -= Time.deltaTime;
+            time -= Time.deltaTime; // count down time
+            
 
         }
     }

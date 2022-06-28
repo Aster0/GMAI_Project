@@ -7,7 +7,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         private int swingSword1 = Animator.StringToHash("SwingMelee");
         private int swingSword2 = Animator.StringToHash("SwingMelee2");
 
-        private bool hit;
+   
 
         private float time;
         
@@ -24,7 +24,6 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
            
 
-            hit = false; // not yet hit.
             
             time = 0.5f; // set cooldown as 0.5 - swing sword is faster as we want a sword to have faster attack speed.
             // incentive of equipping a sword.
@@ -45,8 +44,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
 
             character.FinishHurting(time, character.armedIdle);
+            // handles what happens when the enemy is finished hurting ^
+            // Hit is handled in HitBox.cs - this is because the default project provided that script
+            // so to try to work with the project, I have used that script.
 
-            time -= Time.deltaTime;
+            time -= Time.deltaTime; // count down time.
 
         }
     }
