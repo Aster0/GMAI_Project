@@ -11,7 +11,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
 
 
-        private void OnDrawGizmosSelected()
+        private void OnDrawGizmosSelected() // for debugging to see the grids in the scene view.
         {
             
             

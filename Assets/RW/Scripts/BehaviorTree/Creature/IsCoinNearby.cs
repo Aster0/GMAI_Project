@@ -30,7 +30,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
             Collider[] colliders = Physics.OverlapSphere(transform.position, 5); // collection radius of 5
 
 
-            foreach (Collider collider in colliders)
+            foreach (Collider collider in colliders) // iterate the raycasted colliders
             {
            
 

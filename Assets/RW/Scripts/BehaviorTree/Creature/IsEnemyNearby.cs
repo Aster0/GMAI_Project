@@ -31,7 +31,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
             // around the owner, not the creature.
 
 
-            foreach (Collider collider in colliders)
+            foreach (Collider collider in colliders) // iterate the raycasted colliders
             {
            
 

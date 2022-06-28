@@ -32,9 +32,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
         public override TaskStatus OnUpdate()
         {
 
-            if (Vector3.Distance(transform.position, restingSpot.Value) > 2)
+            if (Vector3.Distance(transform.position, restingSpot.Value) > 2) // if distance is more than 2
             {
-                aStarManager.aStarPathFinding.BuildPath(restingSpot.Value);
+                aStarManager.aStarPathFinding.BuildPath(restingSpot.Value); // we continue path finding to the resting spot.
               
             
                 return TaskStatus.Running;
@@ -43,8 +43,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
             else 
             {
                 
-                Debug.Log("Success");
-                return TaskStatus.Success; // if 
+                
+                return TaskStatus.Success; // if under distance of 2, return successful as it's at the resting spot now.
             }
         
         }

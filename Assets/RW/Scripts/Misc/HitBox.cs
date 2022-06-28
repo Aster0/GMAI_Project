@@ -61,6 +61,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
                         enemy.Damage();
 
                         character.Damaged = true;
+                        // so we wont double damage.
 
                     }
                

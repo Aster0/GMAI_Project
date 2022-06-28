@@ -38,6 +38,9 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             // this makes it so the player lays on the ground and not floating above it.
             // we don't want to use the character.ColliderSize because it changes the center too.
             // we just want to change the height, that's all.
+            
+            character.SetAnimationBool (character.crouchParam , false);
+            // make sure crouch animation is off so it doesnt overlap.
 
             character.Damage();
         }

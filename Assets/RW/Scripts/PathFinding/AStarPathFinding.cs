@@ -384,6 +384,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                         if (!noSearch) // only search if noSearch is false.
                         {
                             Grid newGridInstance = new Grid(); // so this instance is unique to this current pathfinder,
+                            // and cannot be edited by other AIs. (unique to this AI instance)
                             // as other pathfinders might have different f, g, h calculations to the destination.
 
                             newGridInstance.transform = grid.transform;
