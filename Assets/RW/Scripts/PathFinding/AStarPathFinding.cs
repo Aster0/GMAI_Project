@@ -54,10 +54,37 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
         public void BuildPath(Vector3 destination)
         {
             GetStartAndEndGrid(destination); // we'll set the destination we want to go
+            
 
             if (!unreachableDestination && destinationGrid != null && startingGrid != null) // we only want to step and move if its reachable.
             {
+                /*
+                    StepLeastF Explanation: 
+                    We then run the #StepLeastF method that finds the neighbouring grids
+                    (left, right, top left, top right, bottom left, bottom right).
+                    If it’s walkable and not in the open or closed list already,
+                    we put it into the open list as explored.
+                    At the same time, we save the current grid that was linked to the neighbour
+                    grid so we can trace our steps back to find the path later.
+
+                    For each neighbour, we use the #CheckWalkable from the grid instance to use raycast to check
+                    if there’s a game object in the area with the tag “Obstacles”. If there is,
+                    Walkable is set to false and is ignored, not explored. So it’ll never be part of the path.
+
+                    We then sort these walkable neighbour grids from the lowest to highest F cost.
+                    To get the F cost, we take G cost + H cost. 
+
+                    G cost = the accumulated movement cost so far (straight cost = 10, diagonal cost = 14)
+                    H cost = the distance using Euclidean calculation to the destination grid
+                    
+                    After sorting, we get the 0 index, as that is the smallest F cost grid. 
+                    We then step into that grid as current grid
+                    and repeat the process above again to find its neighbours.
+                    
+                 */
                 StepLeastF(); // then we'll find neighbouring grids and step into the least F
+                
+                
                 Move(); // then, we'll move to the destinations node that we have created.
             }
       
@@ -186,6 +213,26 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
 
 
+            /*
+             *  We have a special method in AStarPathFinding.cs that finds the nearest grid to a given position.
+             * (e.g., if I give Vector3(1, 0, 5), it’ll try to find the nearest grid to that position using a
+             * smart ray-casting algorithm)
+ 
+
+                We can use that method now to find the Start & Destination grid.
+                The start grid will be where the NPC is standing on, destination normally would be where the player is, 
+                or what object the NPC is trying to seek. 
+
+                We can safely assume that the Start Grid is the Current Grid. 
+                We’ll also clear the open and close lists for preparation of finding the path to the destination. 
+                Also, to check if the paths are reachable, if not, we shouldn’t even start path finding.
+                 
+
+                Open Grid List = Stores all the grids that have been explored (but not stepped into)
+                Closed Grid List = Stores all the grids that have been stepped into (and explored before)
+             */
+            
+            
   
 
             startingGrid = GetNearestGridToPosition(this.transform.position); // getting the startingGrid using the current position
@@ -211,6 +258,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             closedGrids.Add(startingGrid); // we close the starting grid because we just explored it.
             
 
+            // Since the starting grid is the first grid we step into, we put it into the closed grids list.
+            
         
       
 
@@ -426,11 +475,12 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             
             while (currentGrid.index != destinationGrid.index) // loop until we step into the destination grid
             {
-                /*if (!destinationGrid.Walkable)
-                {
-                    
-                    return;
-                }*/
+                //This keeps iterating until our current grid (stepped in grid) is the destination, 
+                //or if it’s not changed in two iterations (using cachedCurrentGrid variable to sense
+                //if it’s still the same from the previous iteration), meaning that the NPC
+                //is unable to build a path due to obstacles blocking the destination and have no path to it. 
+
+
 
                 
                 // FINDING THE SMALLEST F OF THE NEAREST GRID WE JUST CHECKED AND CALCULATED.
@@ -512,6 +562,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
             {
 
                 FindGridPath(); // we can start to find the path to it.
+                //if we manage to step into our destination grid with our current grid variable,
+                //we then iterate the closed grid list and find the destination grid and save it. (#FindGridPath method)
 
             }
             
