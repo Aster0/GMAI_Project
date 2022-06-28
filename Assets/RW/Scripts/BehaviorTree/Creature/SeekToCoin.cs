@@ -37,7 +37,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
             if (coinObject != null) // null check
             {
                 if(Vector3.Distance(transform.position, coinObject.Value.transform.position) > 1) // if above 1 radius then keep following.
-                    aStarManager.aStarManager.BuildPath(coinObject.Value.transform.position); // then we follow the coin.
+                    aStarManager.aStarPathFinding.BuildPath(coinObject.Value.transform.position); // then we follow the coin.
                 
                 
                 if(Vector3.Distance(transform.position, coinObject.Value.transform.position) < 3)

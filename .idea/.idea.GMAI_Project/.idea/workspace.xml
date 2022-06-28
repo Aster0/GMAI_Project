@@ -33,7 +33,7 @@
 }</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\Contents\Game Dev\Software\Unity\Unity Editor\2021.3.1f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\Programming\Softwares\Unity\Editors\2021.3.2f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;D:\Contents\Sch Stuff\Y3\GMAI\Project\GMAI_Project&quot; -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="D:\Contents\Sch Stuff\Y3\GMAI\Project\GMAI_Project" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -93,6 +93,8 @@
       <workItem from="1656366854264" duration="1902000" />
       <workItem from="1656368980748" duration="16000" />
       <workItem from="1656369537436" duration="2223000" />
+      <workItem from="1656384022108" duration="1445000" />
+      <workItem from="1656395971068" duration="351000" />
     </task>
     <servers />
   </component>

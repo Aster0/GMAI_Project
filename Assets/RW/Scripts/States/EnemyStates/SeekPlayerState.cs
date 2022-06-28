@@ -39,7 +39,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.EnemyStates
 
             if (Vector3.Distance(enemy.characterObject.transform.position, enemy.transform.position) > 2) // if its more than 2 radius away, we go to the player.
             {
-                enemy.aStarPathFinding.aStarManager.BuildPath(enemy.characterObject.transform.position); // build a path to player using A*
+                enemy.aStarPathFinding.aStarPathFinding.BuildPath(enemy.characterObject.transform.position); // build a path to player using A*
             }
         
                 

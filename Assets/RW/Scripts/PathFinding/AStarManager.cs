@@ -16,7 +16,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         private GameObject character;
 
-        public AStarPathFinding aStarManager;
+        public AStarPathFinding aStarPathFinding;
 
         private Coroutine movementCoroutine;
         private Rigidbody rb;
@@ -36,11 +36,11 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
         private void Start()
         {
-            aStarManager = new AStarPathFinding();
+            aStarPathFinding = new AStarPathFinding();
 
-            aStarManager.animator = animator;
-            aStarManager.transform = this.transform;
-            aStarManager.rb = rb;
+            aStarPathFinding.animator = animator;
+            aStarPathFinding.transform = this.transform;
+            aStarPathFinding.rb = rb;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.BehaviorTree.Creature
 
             if (Vector3.Distance(transform.position, restingSpot.Value) > 2)
             {
-                aStarManager.aStarManager.BuildPath(restingSpot.Value);
+                aStarManager.aStarPathFinding.BuildPath(restingSpot.Value);
               
             
                 return TaskStatus.Running;

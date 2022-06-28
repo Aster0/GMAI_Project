@@ -79,7 +79,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
 
             Collider nearestCollider = null;
             
-            foreach (Collider col in Physics.OverlapSphere(pos, 0.5f))
+            foreach (Collider col in Physics.OverlapSphere(pos, 0.5f)) // iterate the colliders around the sphere.
             {
                
             
@@ -96,7 +96,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity.PathFinding
                 }
             }
 
-            return nearestCollider;
+            return nearestCollider; // return the nearest collider after iterating all the collider found around the raycasted sphere
         }
 
         private void CheckIfUnreachable()
